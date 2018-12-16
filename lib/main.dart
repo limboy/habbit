@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import './widgets/tasks.dart';
+import './widgets/note.dart';
+import './widgets/actions.dart';
+import './widgets/habits.dart';
+import './models/habit.dart';
 import './mock/tasks.dart';
 
 void main() => runApp(MyApp());
@@ -21,7 +25,16 @@ class MyApp extends StatelessWidget {
           elevation: 0,
           backgroundColor: Colors.white,
         ),
-        body: Tasks(context, quarterTasks),
+        body: Column(
+          children: <Widget>[
+            Tasks(context, quarterTasks),
+            Note('Hello Baby'),
+            Actions(null),
+            Habits([
+              Habit(iconName: 'videogame_asset', title: '每天玩游戏的时间不超过 2 小时')
+            ]),
+          ],
+        ),
       ),
     );
   }
