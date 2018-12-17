@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/daliytask.dart';
+import '../models/dailytask.dart';
 
 const padding = 16.0;
 const smallPadding = 8.0;

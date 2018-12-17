@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import './env.dart';
+import './repository/repository_ios.dart';
 import './widgets/tasks.dart';
 import './widgets/note.dart';
 import './widgets/actions.dart';
@@ -6,7 +8,10 @@ import './widgets/habits.dart';
 import './models/habit.dart';
 import './mock/tasks.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  Env.repository = RepositoryIOS();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -31,7 +36,9 @@ class MyApp extends StatelessWidget {
             Note('Hello Baby'),
             Actions(null),
             Habits([
-              Habit(iconName: 'videogame_asset', title: '每天玩游戏的时间不超过 2 小时')
+              Habit((b) => b
+                ..iconName = 'videogame_asset'
+                ..title = '每天玩游戏的时间不超过 2 小时')
             ]),
           ],
         ),

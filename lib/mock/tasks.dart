@@ -1,140 +1,381 @@
-import '../models/daliytask.dart';
+import '../models/dailytask.dart';
 
 final weekTasks = <DailyTask>[
-  DailyTask(status: DailyTaskStatus.completed, seq: 1, hasNote: true),
-  DailyTask(
-      status: DailyTaskStatus.failed, seq: 2, hasNote: true, isSelected: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 3, hasNote: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 4, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 5, isSelected: true),
-  DailyTask(isToday: true, isSelected: true, seq: 6),
-  DailyTask(isFuture: true, seq: 7),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 1
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.failed
+    ..seq = 2
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.skipped
+    ..seq = 3
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 4),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 5),
+  DailyTask((b) => b
+    ..isToday = true
+    ..seq = 6),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 7),
 ];
 
 final monthTasks = <DailyTask>[
-  DailyTask(status: DailyTaskStatus.completed, seq: 1, hasNote: true),
-  DailyTask(
-      status: DailyTaskStatus.failed, seq: 2, hasNote: true, isSelected: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 3, hasNote: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 4, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 5, isSelected: true),
-  DailyTask(isToday: true, isSelected: true, seq: 6),
-  DailyTask(status: DailyTaskStatus.completed, seq: 7, hasNote: true),
-  DailyTask(
-      status: DailyTaskStatus.failed, seq: 8, hasNote: true, isSelected: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 9, hasNote: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 10, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 11, isSelected: true),
-  DailyTask(isToday: true, isSelected: true, seq: 12),
-  DailyTask(status: DailyTaskStatus.completed, seq: 13, hasNote: true),
-  DailyTask(
-      status: DailyTaskStatus.failed, seq: 14, hasNote: true, isSelected: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 15, hasNote: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 16, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 17, isSelected: true),
-  DailyTask(isToday: true, isSelected: true, seq: 18),
-  DailyTask(isFuture: true, seq: 19),
-  DailyTask(isFuture: true, seq: 20),
-  DailyTask(isFuture: true, seq: 21),
-  DailyTask(isFuture: true, seq: 22),
-  DailyTask(isFuture: true, seq: 23),
-  DailyTask(isFuture: true, seq: 24),
-  DailyTask(isFuture: true, seq: 25),
-  DailyTask(isFuture: true, seq: 26),
-  DailyTask(isFuture: true, seq: 27),
-  DailyTask(isFuture: true, seq: 28),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 1
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.failed
+    ..seq = 2
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.skipped
+    ..seq = 3
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 4),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 5),
+  DailyTask((b) => b
+    ..isToday = true
+    ..seq = 6),
+  DailyTask((b) => b..seq = 7),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 8
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.failed
+    ..seq = 9
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.skipped
+    ..seq = 10
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 11),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 12),
+  DailyTask((b) => b
+    ..isToday = true
+    ..seq = 13),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 14),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 15),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 16),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 17),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 18
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 19
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 20
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 21),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 22),
+  DailyTask((b) => b
+    ..isToday = true
+    ..seq = 23),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 24),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 25),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 26),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 27),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 28),
 ];
 
 final quarterTasks = <DailyTask>[
-  DailyTask(status: DailyTaskStatus.completed, seq: 1, hasNote: true),
-  DailyTask(
-      status: DailyTaskStatus.failed, seq: 2, hasNote: true, isSelected: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 3, hasNote: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 4, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 5, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 6, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 7, hasNote: true),
-  DailyTask(
-      status: DailyTaskStatus.failed, seq: 8, hasNote: true, isSelected: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 9, hasNote: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 10, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 11, isSelected: true),
-  DailyTask(status: DailyTaskStatus.failed, seq: 12, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 13, hasNote: true),
-  DailyTask(
-      status: DailyTaskStatus.failed, seq: 14, hasNote: true, isSelected: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 15, hasNote: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 16, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 17, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 18, hasNote: true),
-  DailyTask(
-      status: DailyTaskStatus.failed, seq: 19, hasNote: true, isSelected: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 20, hasNote: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 21, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 22, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 23, hasNote: true),
-  DailyTask(
-      status: DailyTaskStatus.failed, seq: 24, hasNote: true, isSelected: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 25, hasNote: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 26, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 27, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 28, hasNote: true),
-  DailyTask(
-      status: DailyTaskStatus.failed, seq: 29, hasNote: true, isSelected: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 30, hasNote: true),
-  DailyTask(status: DailyTaskStatus.skipped, seq: 31, isSelected: true),
-  DailyTask(status: DailyTaskStatus.completed, seq: 32, isSelected: true),
-  DailyTask(isToday: true, isSelected: true, seq: 33),
-  DailyTask(isFuture: true, seq: 34),
-  DailyTask(isFuture: true, seq: 35),
-  DailyTask(isFuture: true, seq: 36),
-  DailyTask(isFuture: true, seq: 37),
-  DailyTask(isFuture: true, seq: 38),
-  DailyTask(isFuture: true, seq: 39),
-  DailyTask(isFuture: true, seq: 40),
-  DailyTask(isFuture: true, seq: 41),
-  DailyTask(isFuture: true, seq: 42),
-  DailyTask(isFuture: true, seq: 43),
-  DailyTask(isFuture: true, seq: 44),
-  DailyTask(isFuture: true, seq: 45),
-  DailyTask(isFuture: true, seq: 46),
-  DailyTask(isFuture: true, seq: 47),
-  DailyTask(isFuture: true, seq: 48),
-  DailyTask(isFuture: true, seq: 49),
-  DailyTask(isFuture: true, seq: 50),
-  DailyTask(isFuture: true, seq: 51),
-  DailyTask(isFuture: true, seq: 52),
-  DailyTask(isFuture: true, seq: 53),
-  DailyTask(isFuture: true, seq: 54),
-  DailyTask(isFuture: true, seq: 55),
-  DailyTask(isFuture: true, seq: 56),
-  DailyTask(isFuture: true, seq: 57),
-  DailyTask(isFuture: true, seq: 58),
-  DailyTask(isFuture: true, seq: 59),
-  DailyTask(isFuture: true, seq: 60),
-  DailyTask(isFuture: true, seq: 61),
-  DailyTask(isFuture: true, seq: 62),
-  DailyTask(isFuture: true, seq: 63),
-  DailyTask(isFuture: true, seq: 64),
-  DailyTask(isFuture: true, seq: 65),
-  DailyTask(isFuture: true, seq: 66),
-  DailyTask(isFuture: true, seq: 67),
-  DailyTask(isFuture: true, seq: 68),
-  DailyTask(isFuture: true, seq: 69),
-  DailyTask(isFuture: true, seq: 70),
-  DailyTask(isFuture: true, seq: 71),
-  DailyTask(isFuture: true, seq: 72),
-  DailyTask(isFuture: true, seq: 73),
-  DailyTask(isFuture: true, seq: 74),
-  DailyTask(isFuture: true, seq: 75),
-  DailyTask(isFuture: true, seq: 76),
-  DailyTask(isFuture: true, seq: 77),
-  DailyTask(isFuture: true, seq: 78),
-  DailyTask(isFuture: true, seq: 79),
-  DailyTask(isFuture: true, seq: 80),
-  DailyTask(isFuture: true, seq: 81),
-  DailyTask(isFuture: true, seq: 82),
-  DailyTask(isFuture: true, seq: 83),
-  DailyTask(
-      status: DailyTaskStatus.failed, seq: 29, hasNote: true, isSelected: true),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 1
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.failed
+    ..seq = 2
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.skipped
+    ..seq = 3
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 4),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 5),
+  DailyTask((b) => b
+    ..isToday = true
+    ..seq = 6),
+  DailyTask((b) => b..seq = 7),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 8
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.failed
+    ..seq = 9
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.skipped
+    ..seq = 10
+    ..note = '木哈哈\n哦'),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 11),
+  DailyTask((b) => b
+    ..status = DailyTaskStatus.completed
+    ..seq = 12),
+  DailyTask((b) => b
+    ..isToday = true
+    ..seq = 13),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 14),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 15),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 16),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 17),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 18),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 19),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 20),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 21),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 22),
+  DailyTask((b) => b
+    ..isToday = true
+    ..seq = 23),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 24),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 25),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 26),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 27),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 28),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 29),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 30),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 31),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 32),
+  DailyTask((b) => b
+    ..isToday = true
+    ..seq = 33),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 34),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 35),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 36),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 37),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 38),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 39),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 40),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 41),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 42),
+  DailyTask((b) => b
+    ..isToday = true
+    ..seq = 43),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 44),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 45),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 46),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 47),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 48),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 49),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 50),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 51),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 52),
+  DailyTask((b) => b
+    ..isToday = true
+    ..seq = 53),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 54),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 55),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 56),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 57),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 58),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 59),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 60),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 61),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 62),
+  DailyTask((b) => b
+    ..isToday = true
+    ..seq = 63),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 64),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 65),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 66),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 67),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 68),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 69),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 70),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 71),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 72),
+  DailyTask((b) => b
+    ..isToday = true
+    ..seq = 73),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 74),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 75),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 76),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 77),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 78),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 79),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 80),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 81),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 82),
+  DailyTask((b) => b
+    ..isToday = true
+    ..seq = 83),
+  DailyTask((b) => b
+    ..isFuture = true
+    ..seq = 84),
 ];
