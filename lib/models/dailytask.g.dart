@@ -51,12 +51,6 @@ class _$DailyTaskSerializer implements StructuredSerializer<DailyTask> {
         ..add(serializers.serialize(object.isFuture,
             specifiedType: const FullType(bool)));
     }
-    if (object.note != null) {
-      result
-        ..add('note')
-        ..add(serializers.serialize(object.note,
-            specifiedType: const FullType(String)));
-    }
 
     return result;
   }
@@ -97,10 +91,6 @@ class _$DailyTaskSerializer implements StructuredSerializer<DailyTask> {
           result.isFuture = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
           break;
-        case 'note':
-          result.note = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
       }
     }
 
@@ -121,8 +111,6 @@ class _$DailyTask extends DailyTask {
   final bool isSelected;
   @override
   final bool isFuture;
-  @override
-  final String note;
 
   factory _$DailyTask([void updates(DailyTaskBuilder b)]) =>
       (new DailyTaskBuilder()..update(updates)).build();
@@ -133,8 +121,7 @@ class _$DailyTask extends DailyTask {
       this.seq,
       this.isToday,
       this.isSelected,
-      this.isFuture,
-      this.note})
+      this.isFuture})
       : super._() {
     if (seq == null) {
       throw new BuiltValueNullFieldError('DailyTask', 'seq');
@@ -157,8 +144,7 @@ class _$DailyTask extends DailyTask {
         seq == other.seq &&
         isToday == other.isToday &&
         isSelected == other.isSelected &&
-        isFuture == other.isFuture &&
-        note == other.note;
+        isFuture == other.isFuture;
   }
 
   @override
@@ -166,13 +152,11 @@ class _$DailyTask extends DailyTask {
     return $jf($jc(
         $jc(
             $jc(
-                $jc(
-                    $jc($jc($jc(0, habitID.hashCode), status.hashCode),
-                        seq.hashCode),
-                    isToday.hashCode),
-                isSelected.hashCode),
-            isFuture.hashCode),
-        note.hashCode));
+                $jc($jc($jc(0, habitID.hashCode), status.hashCode),
+                    seq.hashCode),
+                isToday.hashCode),
+            isSelected.hashCode),
+        isFuture.hashCode));
   }
 
   @override
@@ -183,8 +167,7 @@ class _$DailyTask extends DailyTask {
           ..add('seq', seq)
           ..add('isToday', isToday)
           ..add('isSelected', isSelected)
-          ..add('isFuture', isFuture)
-          ..add('note', note))
+          ..add('isFuture', isFuture))
         .toString();
   }
 }
@@ -216,10 +199,6 @@ class DailyTaskBuilder implements Builder<DailyTask, DailyTaskBuilder> {
   bool get isFuture => _$this._isFuture;
   set isFuture(bool isFuture) => _$this._isFuture = isFuture;
 
-  String _note;
-  String get note => _$this._note;
-  set note(String note) => _$this._note = note;
-
   DailyTaskBuilder();
 
   DailyTaskBuilder get _$this {
@@ -230,7 +209,6 @@ class DailyTaskBuilder implements Builder<DailyTask, DailyTaskBuilder> {
       _isToday = _$v.isToday;
       _isSelected = _$v.isSelected;
       _isFuture = _$v.isFuture;
-      _note = _$v.note;
       _$v = null;
     }
     return this;
@@ -258,8 +236,7 @@ class DailyTaskBuilder implements Builder<DailyTask, DailyTaskBuilder> {
             seq: seq,
             isToday: isToday,
             isSelected: isSelected,
-            isFuture: isFuture,
-            note: note);
+            isFuture: isFuture);
     replace(_$result);
     return _$result;
   }

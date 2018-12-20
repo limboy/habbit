@@ -2,9 +2,8 @@ library habit;
 
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
-import 'package:meta/meta.dart';
+import './dailytask.dart';
 
 part 'habit.g.dart';
 
@@ -18,6 +17,13 @@ abstract class Habit implements Built<Habit, HabitBuilder> {
 
   String get title;
 
+  int get created;
+
   @nullable
-  String get iconName;
+  bool get isSelected;
+
+  String get createdString {
+    final dt = DateTime.fromMicrosecondsSinceEpoch(created);
+    return '${dt.month}/${dt.day}/${dt.year}';
+  }
 }

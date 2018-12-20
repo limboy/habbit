@@ -1,66 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:built_collection/built_collection.dart';
+import 'dart:math';
 import '../models/habit.dart';
-import '../utils/icons.dart';
-
-class _SystemPadding extends StatelessWidget {
-  final Widget child;
-
-  _SystemPadding({Key key, this.child}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context);
-    return new AnimatedContainer(
-        padding: mediaQuery.viewInsets,
-        duration: const Duration(milliseconds: 300),
-        child: child);
-  }
-}
+import '../blocs/bloc_provider.dart';
+import '../blocs/habits_bloc.dart';
 
 class _Habit extends StatelessWidget {
   final Habit habit;
   final double itemWidth;
+  final bool isSelected;
 
-  _Habit(this.itemWidth, this.habit);
+  _Habit(this.itemWidth, this.habit, {this.isSelected = false});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 15),
       width: itemWidth,
-      height: itemWidth,
+      margin: EdgeInsets.all(8),
       decoration: BoxDecoration(
+          color: isSelected != null ? Colors.black12 : Colors.transparent,
           border: Border.all(
-        color: Colors.black87,
-        width: 2,
-      )),
-      padding: EdgeInsets.only(left: 4, bottom: 4),
+            color: Colors.black87,
+            width: 2,
+          )),
+      padding: EdgeInsets.only(top: 3, left: 5, right: 5),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Container(
-            height: 32,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Icon(
-                  getIconDataByName(habit.iconName),
-                  size: 32,
-                ),
-                Icon(
-                  Icons.more_vert,
-                  size: 26,
-                )
-              ],
+            padding: EdgeInsets.only(right: 4),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                habit.title,
+                textAlign: TextAlign.left,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                style: TextStyle(fontSize: 15),
+              ),
             ),
           ),
           Container(
-            padding: EdgeInsets.only(right: 4),
-            child: Text(
-              habit.title,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 3,
-              style: TextStyle(fontSize: 12),
+            height: 25,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  habit.createdString,
+                  style: TextStyle(fontSize: 10, color: Colors.black38),
+                ),
+                Icon(
+                  Icons.more_horiz,
+                  size: 20,
+                )
+              ],
             ),
           ),
         ],
@@ -82,9 +75,8 @@ class _AddHabit extends StatelessWidget {
         this.tapHandler();
       },
       child: Container(
-        margin: EdgeInsets.only(right: 15),
         width: itemWidth,
-        height: itemWidth,
+        margin: EdgeInsets.all(8),
         decoration: BoxDecoration(
             border: Border.all(
           color: Colors.black87,
@@ -100,10 +92,10 @@ class _AddHabit extends StatelessWidget {
 }
 
 class Habits extends StatelessWidget {
-  final List<Habit> habits;
   final titleController = TextEditingController();
+  final int height;
 
-  Habits(this.habits);
+  Habits(this.height);
 
   Future<Habit> _showModifyHaibtDialog(
       BuildContext context, Habit habit) async {
@@ -137,8 +129,11 @@ class Habits extends StatelessWidget {
                 child: Text('OK'),
                 textColor: Colors.white,
                 onPressed: () {
-                  Navigator.pop(context,
-                      habit.rebuild((b) => b..title = titleController.text));
+                  Navigator.pop(
+                      context,
+                      habit.rebuild((b) => b
+                        ..title = titleController.text
+                        ..created = DateTime.now().microsecondsSinceEpoch));
                 },
               )
             ],
@@ -148,45 +143,45 @@ class Habits extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: Container(
-        padding: EdgeInsets.all(15.0),
-        decoration: BoxDecoration(
-            border: Border(top: BorderSide(color: Colors.black45, width: 0.5))),
-        height: 156,
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 30,
-              width: double.infinity,
-              child: Text(
-                'My Habits',
-                style: TextStyle(color: Colors.black54, fontSize: 16),
-              ),
+    final bloc = BlocProvider.of<HabitsBloc>(context);
+    final habitWidth = (MediaQuery.of(context).size.width - 16 * 3) / 2;
+    final aspect = habitWidth / (56.0 + 8);
+
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+          // color: Colors.yellow,
+          border: Border(top: BorderSide(color: Colors.black45, width: 0.5))),
+      height: height.toDouble(),
+      child: StreamBuilder<BuiltList<Habit>>(
+        initialData: BuiltList(),
+        stream: bloc.habits,
+        builder: (context, snapshot) {
+          final habits = snapshot.data;
+          return GridView.builder(
+            itemCount: habits != null ? min(habits.length + 1, 6) : 1,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: aspect,
             ),
-            Container(
-              height: 95,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemExtent: 110,
-                itemCount: habits != null ? habits.length + 1 : 1,
-                itemBuilder: (context, index) {
-                  if (index < habits.length) {
-                    return _Habit(95, habits[index]);
-                  } else {
-                    return _AddHabit(95, () async {
-                      final habit = Habit((b) => b..title = '');
-                      final newHabit =
-                          await _showModifyHaibtDialog(context, habit);
-                      print(newHabit);
-                    });
+            itemBuilder: (context, index) {
+              if (index < habits.length) {
+                return _Habit(habitWidth, habits[index],
+                    isSelected: habits[index].isSelected);
+              } else {
+                return _AddHabit(habitWidth, () async {
+                  final habit = Habit((b) => b
+                    ..title = ''
+                    ..created = DateTime.now().microsecondsSinceEpoch);
+                  final newHabit = await _showModifyHaibtDialog(context, habit);
+                  if (newHabit != null && newHabit.title != '') {
+                    bloc.addHabit(newHabit);
                   }
-                },
-              ),
-            )
-          ],
-        ),
+                });
+              }
+            },
+          );
+        },
       ),
     );
   }

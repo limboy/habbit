@@ -26,7 +26,7 @@ class RepositoryIOS extends Repository {
   }
 
   Future<List<DailyTask>> getTasks(int habitID) async {
-    return weekTasks;
+    return threeTasks;
   }
 
   Future<DailyTask> updateTask(DailyTask task) async {

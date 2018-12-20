@@ -21,6 +21,8 @@ class _$HabitSerializer implements StructuredSerializer<Habit> {
       'title',
       serializers.serialize(object.title,
           specifiedType: const FullType(String)),
+      'created',
+      serializers.serialize(object.created, specifiedType: const FullType(int)),
     ];
     if (object.habitID != null) {
       result
@@ -28,11 +30,11 @@ class _$HabitSerializer implements StructuredSerializer<Habit> {
         ..add(serializers.serialize(object.habitID,
             specifiedType: const FullType(int)));
     }
-    if (object.iconName != null) {
+    if (object.isSelected != null) {
       result
-        ..add('iconName')
-        ..add(serializers.serialize(object.iconName,
-            specifiedType: const FullType(String)));
+        ..add('isSelected')
+        ..add(serializers.serialize(object.isSelected,
+            specifiedType: const FullType(bool)));
     }
 
     return result;
@@ -57,9 +59,13 @@ class _$HabitSerializer implements StructuredSerializer<Habit> {
           result.title = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'iconName':
-          result.iconName = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+        case 'created':
+          result.created = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'isSelected':
+          result.isSelected = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
           break;
       }
     }
@@ -74,14 +80,20 @@ class _$Habit extends Habit {
   @override
   final String title;
   @override
-  final String iconName;
+  final int created;
+  @override
+  final bool isSelected;
 
   factory _$Habit([void updates(HabitBuilder b)]) =>
       (new HabitBuilder()..update(updates)).build();
 
-  _$Habit._({this.habitID, this.title, this.iconName}) : super._() {
+  _$Habit._({this.habitID, this.title, this.created, this.isSelected})
+      : super._() {
     if (title == null) {
       throw new BuiltValueNullFieldError('Habit', 'title');
+    }
+    if (created == null) {
+      throw new BuiltValueNullFieldError('Habit', 'created');
     }
   }
 
@@ -98,13 +110,15 @@ class _$Habit extends Habit {
     return other is Habit &&
         habitID == other.habitID &&
         title == other.title &&
-        iconName == other.iconName;
+        created == other.created &&
+        isSelected == other.isSelected;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, habitID.hashCode), title.hashCode), iconName.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, habitID.hashCode), title.hashCode), created.hashCode),
+        isSelected.hashCode));
   }
 
   @override
@@ -112,7 +126,8 @@ class _$Habit extends Habit {
     return (newBuiltValueToStringHelper('Habit')
           ..add('habitID', habitID)
           ..add('title', title)
-          ..add('iconName', iconName))
+          ..add('created', created)
+          ..add('isSelected', isSelected))
         .toString();
   }
 }
@@ -128,9 +143,13 @@ class HabitBuilder implements Builder<Habit, HabitBuilder> {
   String get title => _$this._title;
   set title(String title) => _$this._title = title;
 
-  String _iconName;
-  String get iconName => _$this._iconName;
-  set iconName(String iconName) => _$this._iconName = iconName;
+  int _created;
+  int get created => _$this._created;
+  set created(int created) => _$this._created = created;
+
+  bool _isSelected;
+  bool get isSelected => _$this._isSelected;
+  set isSelected(bool isSelected) => _$this._isSelected = isSelected;
 
   HabitBuilder();
 
@@ -138,7 +157,8 @@ class HabitBuilder implements Builder<Habit, HabitBuilder> {
     if (_$v != null) {
       _habitID = _$v.habitID;
       _title = _$v.title;
-      _iconName = _$v.iconName;
+      _created = _$v.created;
+      _isSelected = _$v.isSelected;
       _$v = null;
     }
     return this;
@@ -160,7 +180,11 @@ class HabitBuilder implements Builder<Habit, HabitBuilder> {
   @override
   _$Habit build() {
     final _$result = _$v ??
-        new _$Habit._(habitID: habitID, title: title, iconName: iconName);
+        new _$Habit._(
+            habitID: habitID,
+            title: title,
+            created: created,
+            isSelected: isSelected);
     replace(_$result);
     return _$result;
   }

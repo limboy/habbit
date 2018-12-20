@@ -31,9 +31,4 @@ abstract class DailyTask implements Built<DailyTask, DailyTaskBuilder> {
 
   @nullable
   bool get isFuture;
-
-  @nullable
-  String get note;
-
-  bool get hasNote => note != null;
 }
