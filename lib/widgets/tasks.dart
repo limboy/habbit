@@ -16,21 +16,18 @@ const quarterTasksCount = 81;
 class _TaskItem extends StatelessWidget {
   final double itemWidth;
   final DailyTask task;
-  var showPassedSeq;
+  final showPassedSeq;
   _TaskItem(this.itemWidth, this.task, {this.showPassedSeq: true});
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<HabitsBloc>(context).tasksBloc;
     var circleColor = Colors.black12;
     var text = '${task.seq}';
     var textColor = Colors.white;
 
-    if (task.isSelected == true) {
-      textColor = Colors.black87;
-    }
-
     if (task.isToday == true) {
-      textColor = Colors.blue;
+      textColor = Colors.black87;
     }
 
     if (task.status != null && !showPassedSeq) {
@@ -42,7 +39,7 @@ class _TaskItem extends StatelessWidget {
         circleColor = Colors.green;
         break;
       case DailyTaskStatus.failed:
-        circleColor = Colors.green;
+        circleColor = Colors.red;
         break;
       case DailyTaskStatus.skipped:
         if (showPassedSeq) {
@@ -50,26 +47,38 @@ class _TaskItem extends StatelessWidget {
         }
     }
 
+    if (task.isSelected == true) {
+      textColor = Colors.white;
+      circleColor = Colors.black87;
+    }
+
     if (task.isFuture == true) {
       textColor = Colors.black38;
       circleColor = Colors.black12;
     }
 
-    return Container(
-        width: itemWidth,
-        height: itemWidth,
-        margin: EdgeInsets.all(padding / 2),
-        decoration: BoxDecoration(
-          color: circleColor,
-          shape: BoxShape.circle,
-        ),
-        // border: Border.all(color: circleBorderColor, width: 2)),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(color: textColor, fontSize: itemWidth / 2.5),
+    return GestureDetector(
+      onTap: () {
+        if (task.isFuture != true) {
+          bloc.selectTask(task);
+        }
+      },
+      child: Container(
+          width: itemWidth,
+          height: itemWidth,
+          margin: EdgeInsets.all(padding / 2),
+          decoration: BoxDecoration(
+            color: circleColor,
+            shape: BoxShape.circle,
           ),
-        ));
+          // border: Border.all(color: circleBorderColor, width: 2)),
+          child: Center(
+            child: Text(
+              text,
+              style: TextStyle(color: textColor, fontSize: itemWidth / 2.5),
+            ),
+          )),
+    );
   }
 }
 

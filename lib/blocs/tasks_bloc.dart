@@ -9,9 +9,28 @@ class TasksBloc extends BlocBase {
   final tasks = BehaviorSubject<BuiltList<DailyTask>>();
 
   selectHabit(int habitID) {
-    tasks.add(BuiltList(quarterTasks));
-    selectedTask
-        .add(quarterTasks.where((task) => task.isSelected == true).first);
+    tasks.add(BuiltList(weekTasks));
+    selectedTask.add(weekTasks.where((task) => task.isSelected == true).first);
+  }
+
+  selectTask(DailyTask task) {
+    selectedTask.add(task);
+    tasks.add(tasks.value.rebuild((b) => b.map((_task) {
+          if (_task.isSelected == true && _task.seq != task.seq) {
+            return _task.rebuild((__task) => __task..isSelected = false);
+          }
+          if (_task.seq == task.seq) {
+            return _task.rebuild((__task) => __task..isSelected = true);
+          }
+          return _task;
+        })));
+  }
+
+  updataTask(DailyTask task) {
+    selectedTask.add(task);
+    tasks.add(tasks.value.rebuild((b) => b.map((_task) {
+          return _task.seq == task.seq ? task : _task;
+        })));
   }
 
   dispose() {
