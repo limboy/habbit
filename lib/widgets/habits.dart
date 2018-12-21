@@ -18,53 +18,59 @@ class _Habit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: itemWidth,
-      margin: EdgeInsets.all(8),
-      decoration: BoxDecoration(
-          color: isSelected != null ? Colors.black12 : Colors.transparent,
-          border: Border.all(
-            color: Colors.black87,
-            width: 2,
-          )),
-      padding: EdgeInsets.only(top: 3, left: 5, right: 5),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(right: 4),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                habit.title,
-                textAlign: TextAlign.left,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: TextStyle(fontSize: 15),
+    final bloc = BlocProvider.of<HabitsBloc>(context);
+    return GestureDetector(
+      onTap: () {
+        bloc.selectHabit(habit);
+      },
+      child: Container(
+        width: itemWidth,
+        margin: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+            color: isSelected == true ? Colors.black12 : Colors.transparent,
+            border: Border.all(
+              color: Colors.black87,
+              width: 2,
+            )),
+        padding: EdgeInsets.only(top: 3, left: 5, right: 5),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(right: 4),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  habit.title,
+                  textAlign: TextAlign.left,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(fontSize: 15),
+                ),
               ),
             ),
-          ),
-          Container(
-            height: 25,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  habit.createdString,
-                  style: TextStyle(fontSize: 10, color: Colors.black38),
-                ),
-                GestureDetector(
-                    onTap: () {
-                      onSelectMore();
-                    },
-                    child: Icon(
-                      Icons.more_horiz,
-                      size: 20,
-                    ))
-              ],
+            Container(
+              height: 25,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    habit.createdString,
+                    style: TextStyle(fontSize: 10, color: Colors.black38),
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        onSelectMore();
+                      },
+                      child: Icon(
+                        Icons.more_horiz,
+                        size: 20,
+                      ))
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

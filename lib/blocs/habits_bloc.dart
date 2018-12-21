@@ -39,6 +39,11 @@ class HabitsBloc extends BlocBase {
   selectHabit(Habit habit) {
     final selectedHabit = habit.rebuild((b) => b..isSelected = true);
     final habitIndex = _habits.value.indexOf(habit);
+
+    // remove previous isSelected
+    _habits.value = _habits.value.rebuild((b) =>
+        b..map((item) => item.rebuild((_item) => _item.isSelected = false)));
+
     _habits.add(_habits.value.rebuild(
         (b) => b.replaceRange(habitIndex, habitIndex + 1, [selectedHabit])));
     tasksBloc.selectHabit(habit.habitID);

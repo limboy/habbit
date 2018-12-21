@@ -38,8 +38,6 @@ class Body extends StatelessWidget {
                   habitPadding;
               final actionsHeight = totalHeight - tasksHeight - habitsHeight;
 
-              print('count: $habitCount, tasksHeight: $tasksHeight');
-
               if (habitCount == 0) {
                 // show welcome
                 return CustomScrollView(
