@@ -9,8 +9,10 @@ class _Habit extends StatelessWidget {
   final Habit habit;
   final double itemWidth;
   final bool isSelected;
+  final Function onSelectMore;
 
-  _Habit(this.itemWidth, this.habit, {this.isSelected = false});
+  _Habit(this.itemWidth, this.habit, this.onSelectMore,
+      {this.isSelected = false});
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +51,14 @@ class _Habit extends StatelessWidget {
                   habit.createdString,
                   style: TextStyle(fontSize: 10, color: Colors.black38),
                 ),
-                Icon(
-                  Icons.more_horiz,
-                  size: 20,
-                )
+                GestureDetector(
+                    onTap: () {
+                      onSelectMore();
+                    },
+                    child: Icon(
+                      Icons.more_horiz,
+                      size: 20,
+                    ))
               ],
             ),
           ),
@@ -166,8 +172,13 @@ class Habits extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               if (index < habits.length) {
-                return _Habit(habitWidth, habits[index],
-                    isSelected: habits[index].isSelected);
+                return _Habit(habitWidth, habits[index], () async {
+                  final updatedHabit =
+                      await _showModifyHaibtDialog(context, habits[index]);
+                  if (updatedHabit != null && updatedHabit.title != '') {
+                    bloc.updateHabit(updatedHabit);
+                  }
+                }, isSelected: habits[index].isSelected);
               } else {
                 return _AddHabit(habitWidth, () async {
                   final habit = Habit((b) => b

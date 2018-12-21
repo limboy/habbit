@@ -43,6 +43,16 @@ class HabitsBloc extends BlocBase {
     tasksBloc.selectHabit(habit.habitID);
   }
 
+  updateHabit(Habit habit) {
+    final theHabit =
+        _habits.value.where((_habit) => _habit.habitID == habit.habitID).first;
+    final habitIndex = _habits.value.indexOf(theHabit);
+    Env.repository.updateHabit(habit).then((habit) {
+      _habits.add(_habits.value
+          .rebuild((b) => b.replaceRange(habitIndex, habitIndex + 1, [habit])));
+    });
+  }
+
   dispose() {
     _habits.close();
   }
