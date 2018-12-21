@@ -5,6 +5,8 @@ import '../models/habit.dart';
 import '../blocs/bloc_provider.dart';
 import '../blocs/habits_bloc.dart';
 
+const maxHabitCount = 6;
+
 class _Habit extends StatelessWidget {
   final Habit habit;
   final double itemWidth;
@@ -37,7 +39,7 @@ class _Habit extends StatelessWidget {
                 habit.title,
                 textAlign: TextAlign.left,
                 overflow: TextOverflow.ellipsis,
-                maxLines: 3,
+                maxLines: 1,
                 style: TextStyle(fontSize: 15),
               ),
             ),
@@ -107,43 +109,68 @@ class Habits extends StatelessWidget {
       BuildContext context, Habit habit) async {
     titleController.text = habit.title;
 
+    final bloc = BlocProvider.of<HabitsBloc>(context);
+
     return await showDialog<Habit>(
         context: context,
         builder: (context) {
           return AlertDialog(
-            contentPadding: EdgeInsets.all(16.0),
-            content: Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
+              contentPadding: EdgeInsets.all(16.0),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  TextField(
                     decoration: InputDecoration(
-                      labelText: 'Habit Name',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        borderSide: BorderSide.none,
+                      ),
+                      fillColor: Colors.black12,
+                      filled: true,
+                      hasFloatingPlaceholder: false,
+                      hintText: "New Habit",
+                      contentPadding: EdgeInsets.all(8),
                     ),
                     controller: titleController,
+                    onSubmitted: ((value) {
+                      Navigator.pop(
+                          context,
+                          habit.rebuild((b) => b
+                            ..title = value
+                            ..created = DateTime.now().microsecondsSinceEpoch));
+                    }),
                   ),
-                )
-              ],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              RaisedButton(
-                child: Text('OK'),
-                textColor: Colors.white,
-                onPressed: () {
-                  Navigator.pop(
-                      context,
-                      habit.rebuild((b) => b
-                        ..title = titleController.text
-                        ..created = DateTime.now().microsecondsSinceEpoch));
-                },
-              )
-            ],
-          );
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 7),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: GestureDetector(
+                            onTap: () {
+                              bloc.deleteHabit(habit);
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'delete',
+                              style: TextStyle(color: Colors.red),
+                            )),
+                      ),
+                      Container(
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'cancel',
+                              style: TextStyle(color: Colors.black54),
+                            )),
+                      ),
+                    ],
+                  )
+                ],
+              ));
         });
   }
 
@@ -165,13 +192,14 @@ class Habits extends StatelessWidget {
         builder: (context, snapshot) {
           final habits = snapshot.data;
           return GridView.builder(
-            itemCount: habits != null ? min(habits.length + 1, 6) : 1,
+            itemCount:
+                habits != null ? min(habits.length + 1, maxHabitCount) : 1,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: aspect,
             ),
             itemBuilder: (context, index) {
-              if (index < habits.length) {
+              if (index < habits.length || habits.length == maxHabitCount) {
                 return _Habit(habitWidth, habits[index], () async {
                   final updatedHabit =
                       await _showModifyHaibtDialog(context, habits[index]);

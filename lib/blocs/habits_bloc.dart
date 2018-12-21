@@ -14,10 +14,8 @@ class HabitsBloc extends BlocBase {
   _getHabits() {
     Env.repository.getHabits().then((habits) {
       if (habits.length > 0) {
-        final selectedHabit = habits[0].rebuild((b) => b..isSelected = true);
-        habits[0] = selectedHabit;
-        _habits.add(BuiltList(habits));
-        tasksBloc.selectHabit(selectedHabit.habitID);
+        _habits.value = BuiltList(habits);
+        selectHabit(habits[0]);
       }
     });
   }
@@ -29,17 +27,20 @@ class HabitsBloc extends BlocBase {
   addHabit(Habit habit) {
     Env.repository.createHabit(habit).then((habit) {
       final habits = _habits.value.rebuild((b) => b..add(habit));
-      _habits.add(habits);
-      if (_habits.value.length == 1) {
+      if (habits.length == 1) {
+        _habits.value = habits;
         selectHabit(habit);
+      } else {
+        _habits.add(habits);
       }
     });
   }
 
   selectHabit(Habit habit) {
+    final selectedHabit = habit.rebuild((b) => b..isSelected = true);
     final habitIndex = _habits.value.indexOf(habit);
-    _habits.add(_habits.value
-        .rebuild((b) => b.replaceRange(habitIndex, habitIndex + 1, [habit])));
+    _habits.add(_habits.value.rebuild(
+        (b) => b.replaceRange(habitIndex, habitIndex + 1, [selectedHabit])));
     tasksBloc.selectHabit(habit.habitID);
   }
 
@@ -51,6 +52,15 @@ class HabitsBloc extends BlocBase {
       _habits.add(_habits.value
           .rebuild((b) => b.replaceRange(habitIndex, habitIndex + 1, [habit])));
     });
+  }
+
+  deleteHabit(Habit habit) {
+    final habitIndex = _habits.value.indexOf(habit);
+    final newHabits = _habits.value.rebuild((b) => b.removeAt(habitIndex));
+    _habits.add(newHabits);
+    if (newHabits.length > 0) {
+      selectHabit(newHabits[0]);
+    }
   }
 
   dispose() {

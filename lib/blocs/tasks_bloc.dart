@@ -5,25 +5,17 @@ import '../blocs/bloc_base.dart';
 import 'package:built_collection/built_collection.dart';
 
 class TasksBloc extends BlocBase {
-  final _selectedTask = BehaviorSubject<DailyTask>();
-  final _tasks = BehaviorSubject<BuiltList<DailyTask>>();
-
-  Stream<DailyTask> get selectedTask {
-    return _selectedTask.stream;
-  }
-
-  Stream<BuiltList<DailyTask>> get tasks {
-    return _tasks.stream;
-  }
+  final selectedTask = BehaviorSubject<DailyTask>();
+  final tasks = BehaviorSubject<BuiltList<DailyTask>>();
 
   selectHabit(int habitID) {
-    _tasks.add(BuiltList(quarterTasks));
-    _selectedTask
+    tasks.add(BuiltList(quarterTasks));
+    selectedTask
         .add(quarterTasks.where((task) => task.isSelected == true).first);
   }
 
   dispose() {
-    _selectedTask.close();
-    _tasks.close();
+    selectedTask.close();
+    tasks.close();
   }
 }

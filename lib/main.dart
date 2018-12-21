@@ -38,33 +38,33 @@ class Body extends StatelessWidget {
                   habitPadding;
               final actionsHeight = totalHeight - tasksHeight - habitsHeight;
 
-              if (habitCount <= 1) {
-                if (habitCount == 0) {
-                  // show welcome
-                  return CustomScrollView(
-                    slivers: <Widget>[
-                      SliverToBoxAdapter(
-                        child: Container(
-                          decoration: BoxDecoration(color: Colors.yellow),
-                          height: totalHeight - habitsHeight,
-                        ),
+              print('count: $habitCount, tasksHeight: $tasksHeight');
+
+              if (habitCount == 0) {
+                // show welcome
+                return CustomScrollView(
+                  slivers: <Widget>[
+                    SliverToBoxAdapter(
+                      child: Container(
+                        decoration: BoxDecoration(color: Colors.yellow),
+                        height: totalHeight - habitsHeight,
                       ),
-                      SliverToBoxAdapter(
-                        child: Habits(habitsHeight),
-                      )
-                    ],
-                  );
-                } else {
-                  return CustomScrollView(
-                    slivers: <Widget>[
-                      SliverToBoxAdapter(child: Tasks(context)),
-                      SliverToBoxAdapter(child: Actions(actionsHeight)),
-                      SliverToBoxAdapter(
-                        child: Habits(habitsHeight),
-                      )
-                    ],
-                  );
-                }
+                    ),
+                    SliverToBoxAdapter(
+                      child: Container(child: Habits(habitsHeight)),
+                    )
+                  ],
+                );
+              } else {
+                return CustomScrollView(
+                  slivers: <Widget>[
+                    SliverToBoxAdapter(child: Tasks(context)),
+                    SliverToBoxAdapter(child: Actions(actionsHeight)),
+                    SliverToBoxAdapter(
+                      child: Habits(habitsHeight),
+                    )
+                  ],
+                );
               }
             },
           ));

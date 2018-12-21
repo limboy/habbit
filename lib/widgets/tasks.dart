@@ -82,8 +82,8 @@ class Tasks extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<HabitsBloc>(context).tasksBloc;
     return StreamBuilder<BuiltList<DailyTask>>(
-        initialData: null,
-        stream: bloc.tasks,
+        initialData: bloc.tasks.value,
+        stream: bloc.tasks.stream,
         builder: (context, snapshot) {
           final tasks = snapshot.data;
           if (tasks == null) {

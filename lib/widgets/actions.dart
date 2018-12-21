@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 import '../models/dailytask.dart';
 import '../blocs/bloc_provider.dart';
 import '../blocs/tasks_bloc.dart';
@@ -12,20 +13,20 @@ class Actions extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<HabitsBloc>(context).tasksBloc;
     return StreamBuilder(
-      initialData: null,
-      stream: bloc.selectedTask,
+      initialData: bloc.selectedTask.value,
+      stream: bloc.selectedTask.stream,
       builder: (context, snapshot) {
         final task = snapshot.data;
         if (task == null) {
           return Container();
         }
 
-        final screenWidth = MediaQuery.of(context).size.width;
-        final mainButtonWidth = screenWidth / 3.67;
+        final mainButtonWidth = min(height - 40, 100).toDouble();
         final buttonWidth = mainButtonWidth * 2 / 3;
         return Container(
           height: height,
-          padding: EdgeInsets.only(bottom: (height - mainButtonWidth - 30) / 2),
+          padding: EdgeInsets.only(
+              bottom: max(0, (height - mainButtonWidth - 30)) / 2),
           child: Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
