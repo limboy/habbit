@@ -27,6 +27,7 @@ class TasksBloc extends BlocBase {
   }
 
   updataTask(DailyTask task) {
+    task = task.rebuild((b) => b.isSelected = true);
     selectedTask.add(task);
     tasks.add(tasks.value.rebuild((b) => b.map((_task) {
           return _task.seq == task.seq ? task : _task;
