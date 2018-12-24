@@ -6,7 +6,51 @@ part of dailytask;
 // BuiltValueGenerator
 // **************************************************************************
 
+const DailyTaskStatus _$completed = const DailyTaskStatus._('completed');
+const DailyTaskStatus _$skipped = const DailyTaskStatus._('skipped');
+const DailyTaskStatus _$failed = const DailyTaskStatus._('failed');
+
+DailyTaskStatus _$dtsValueOf(String name) {
+  switch (name) {
+    case 'completed':
+      return _$completed;
+    case 'skipped':
+      return _$skipped;
+    case 'failed':
+      return _$failed;
+    default:
+      throw new ArgumentError(name);
+  }
+}
+
+final BuiltSet<DailyTaskStatus> _$dtsValues =
+    new BuiltSet<DailyTaskStatus>(const <DailyTaskStatus>[
+  _$completed,
+  _$skipped,
+  _$failed,
+]);
+
+Serializer<DailyTaskStatus> _$dailyTaskStatusSerializer =
+    new _$DailyTaskStatusSerializer();
 Serializer<DailyTask> _$dailyTaskSerializer = new _$DailyTaskSerializer();
+
+class _$DailyTaskStatusSerializer
+    implements PrimitiveSerializer<DailyTaskStatus> {
+  @override
+  final Iterable<Type> types = const <Type>[DailyTaskStatus];
+  @override
+  final String wireName = 'DailyTaskStatus';
+
+  @override
+  Object serialize(Serializers serializers, DailyTaskStatus object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      object.name;
+
+  @override
+  DailyTaskStatus deserialize(Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      DailyTaskStatus.valueOf(serialized as String);
+}
 
 class _$DailyTaskSerializer implements StructuredSerializer<DailyTask> {
   @override

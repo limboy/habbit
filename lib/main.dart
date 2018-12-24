@@ -14,18 +14,25 @@ import 'package:built_collection/built_collection.dart';
 
 void main() {
   Env.repository = RepositoryIOS();
-  runApp(MyApp());
+  runApp(App());
 }
 
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<BuiltList<Habit>>(
-        initialData: null,
-        stream: BlocProvider.of<HabitsBloc>(context).habits,
+    return StreamBuilder<bool>(
+        initialData: false,
+        stream: BlocProvider.of<HabitsBloc>(context).hasLoaded,
         builder: (context, snapshot) {
-          final habits = snapshot.data;
-          final habitCount = habits == null ? 0 : habits.length;
+          final loaded = snapshot.data;
+          if (loaded != true) {
+            return Container();
+          }
+
+          final bloc = BlocProvider.of<HabitsBloc>(context);
+          final habits = bloc.habits.value;
+
+          final int habitCount = habits == null ? 0 : habits.length;
 
           return SafeArea(child: LayoutBuilder(
             builder: (context, constraints) {
@@ -37,6 +44,8 @@ class Body extends StatelessWidget {
                       (habitItemHeight + habitPadding) +
                   habitPadding;
               final actionsHeight = totalHeight - tasksHeight - habitsHeight;
+
+              print('habitCount:$habitCount');
 
               if (habitCount == 0) {
                 // show welcome
@@ -70,26 +79,69 @@ class Body extends StatelessWidget {
   }
 }
 
-class MyApp extends StatelessWidget {
+class ProviderWrapper extends StatelessWidget {
+  final Widget child;
+  ProviderWrapper(this.child);
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      bloc: HabitsBloc(context),
+      child: child,
+    );
+  }
+}
+
+class Title extends StatelessWidget {
+  Title();
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<bool>(
+        initialData: false,
+        stream: BlocProvider.of<HabitsBloc>(context).hasLoaded,
+        builder: (context, snapshot) {
+          final loaded = snapshot.data;
+          if (loaded != true) {
+            return Text('');
+          }
+
+          final bloc = BlocProvider.of<HabitsBloc>(context);
+          final habits = bloc.habits.value;
+          var title = 'Habbit';
+          if (habits.length > 0) {
+            final habit =
+                habits.firstWhere((_habit) => _habit.isSelected == true);
+            if (habit != null) {
+              title = habit.title;
+            }
+          }
+          return Text(
+            title,
+            style: TextStyle(color: Colors.black87),
+          );
+        });
+  }
+}
+
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Habbit',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text(
-            'Hello World',
-            style: TextStyle(color: Colors.black87),
-          ),
-          elevation: 0,
+      home: ProviderWrapper(
+        Scaffold(
           backgroundColor: Colors.white,
+          appBar: AppBar(
+            title: Title(),
+            elevation: 0,
+            backgroundColor: Colors.white,
+          ),
+          body: Body(),
+          resizeToAvoidBottomPadding: false,
         ),
-        body: BlocProvider(bloc: HabitsBloc(), child: Body()),
-        resizeToAvoidBottomPadding: false,
       ),
     );
   }

@@ -21,7 +21,7 @@ class _Habit extends StatelessWidget {
     final bloc = BlocProvider.of<HabitsBloc>(context);
     return GestureDetector(
       onTap: () {
-        bloc.selectHabit(habit);
+        bloc.selectHabit(habit, context);
       },
       child: Container(
         width: itemWidth,
@@ -155,7 +155,7 @@ class Habits extends StatelessWidget {
                       Container(
                         child: GestureDetector(
                             onTap: () {
-                              bloc.deleteHabit(habit);
+                              bloc.deleteHabit(habit, context);
                               Navigator.pop(context);
                             },
                             child: Text(
@@ -220,7 +220,7 @@ class Habits extends StatelessWidget {
                     ..created = DateTime.now().microsecondsSinceEpoch);
                   final newHabit = await _showModifyHaibtDialog(context, habit);
                   if (newHabit != null && newHabit.title != '') {
-                    bloc.addHabit(newHabit);
+                    bloc.addHabit(newHabit, context);
                   }
                 });
               }
