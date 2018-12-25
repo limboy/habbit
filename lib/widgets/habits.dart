@@ -45,18 +45,18 @@ class _Habit extends StatelessWidget {
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  style: TextStyle(fontSize: 15),
+                  style: TextStyle(fontSize: 16),
                 ),
               ),
             ),
             Container(
-              height: 25,
+              height: 23,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
                     habit.createdString,
-                    style: TextStyle(fontSize: 10, color: Colors.black38),
+                    style: TextStyle(fontSize: 12, color: Colors.black38),
                   ),
                   GestureDetector(
                       onTap: () {
@@ -126,6 +126,8 @@ class Habits extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   TextField(
+                    autofocus: true,
+                    style: TextStyle(fontSize: 18, color: Colors.black87),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -146,35 +148,47 @@ class Habits extends StatelessWidget {
                             ..created = DateTime.now().microsecondsSinceEpoch));
                     }),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 7),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: GestureDetector(
-                            onTap: () {
-                              bloc.deleteHabit(habit, context);
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              'delete',
-                              style: TextStyle(color: Colors.red),
-                            )),
-                      ),
-                      Container(
-                        child: GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              'cancel',
-                              style: TextStyle(color: Colors.black54),
-                            )),
-                      ),
-                    ],
-                  )
+                  () {
+                    if (habit.title == null || habit.title.length == 0) {
+                      return Container();
+                    } else {
+                      return Container(
+                        child: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 7),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        bloc.deleteHabit(habit, context);
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'delete',
+                                        style: TextStyle(color: Colors.red),
+                                      )),
+                                ),
+                                Container(
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'cancel',
+                                        style: TextStyle(color: Colors.black54),
+                                      )),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                  }()
                 ],
               ));
         });

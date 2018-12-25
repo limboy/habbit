@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/animation.dart';
 import 'dart:math';
 import '../models/dailytask.dart';
 import '../blocs/bloc_provider.dart';
@@ -13,18 +14,77 @@ const weekTasksCount = 9;
 const monthTasksCount = 25;
 const quarterTasksCount = 81;
 
-class _TaskItem extends StatelessWidget {
+class _TaskItem extends StatefulWidget {
   final double itemWidth;
   final DailyTask task;
   final showPassedSeq;
-  _TaskItem(this.itemWidth, this.task, {this.showPassedSeq: true});
+  var shouldAnimate;
+
+  _TaskItem(this.itemWidth, this.task,
+      {this.showPassedSeq: true, this.shouldAnimate: false});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _TaskItemState();
+  }
+}
+
+class _TaskItemState extends State<_TaskItem>
+    with SingleTickerProviderStateMixin {
+  Animation<Color> animation;
+  AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller =
+        AnimationController(duration: Duration(milliseconds: 600), vsync: this);
+  }
+
+  _setupAnimation() {
+    var fromColor = Colors.transparent;
+    if (widget.task.status != null) {
+      switch (widget.task.status) {
+        case DailyTaskStatus.completed:
+          fromColor = Colors.green;
+          break;
+        case DailyTaskStatus.failed:
+          fromColor = Colors.red;
+          break;
+        case DailyTaskStatus.skipped:
+          fromColor = Colors.black38;
+      }
+    }
+    animation =
+        ColorTween(begin: fromColor, end: Colors.black87).animate(controller)
+          ..addListener(() {
+            setState(() {});
+          })
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              widget.shouldAnimate = false;
+            }
+          });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final task = widget.task;
+    final itemWidth = widget.itemWidth;
+    final showPassedSeq = widget.showPassedSeq;
+    final shouldAnimate = widget.shouldAnimate;
+
     final bloc = BlocProvider.of<HabitsBloc>(context).tasksBloc;
     var circleColor = Colors.black12;
     var text = '${task.seq}';
     var textColor = Colors.white;
+
+    if (shouldAnimate && !controller.isAnimating) {
+      _setupAnimation();
+      controller
+        ..reset()
+        ..forward();
+    }
 
     if (task.isToday == true) {
       textColor = Colors.black;
@@ -68,7 +128,7 @@ class _TaskItem extends StatelessWidget {
           height: itemWidth,
           margin: EdgeInsets.all(padding / 2),
           decoration: BoxDecoration(
-            color: circleColor,
+            color: shouldAnimate ? animation.value : circleColor,
             shape: BoxShape.circle,
           ),
           // border: Border.all(color: circleBorderColor, width: 2)),
@@ -79,6 +139,12 @@ class _TaskItem extends StatelessWidget {
             ),
           )),
     );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }
 
@@ -142,6 +208,7 @@ class Tasks extends StatelessWidget {
                     itemWidth,
                     tasks[index],
                     showPassedSeq: showPassedSeq,
+                    shouldAnimate: tasks[index].isSelected == true,
                   );
                 },
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
