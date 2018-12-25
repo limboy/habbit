@@ -43,6 +43,10 @@ class TasksBloc extends BlocBase {
         task = task.rebuild((b) => b
           ..isSelected = true
           ..isToday = true);
+      } else {
+        task = task.rebuild((b) => b
+          ..isSelected = false
+          ..isToday = false);
       }
       _tasks.add(task);
     }

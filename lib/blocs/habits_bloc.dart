@@ -29,6 +29,9 @@ class HabitsBloc extends BlocBase {
   }
 
   addHabit(Habit habit, BuildContext context) async {
+    if (habit.habitID == null) {
+      habit = habit.rebuild((b) => b.habitID = b.created);
+    }
     final _habit = await Env.repository.createHabit(habit);
     final _habits = habits.value.rebuild((b) => b..add(_habit));
     if (_habits.length == 1) {
@@ -42,7 +45,8 @@ class HabitsBloc extends BlocBase {
 
   selectHabit(Habit habit, BuildContext context) async {
     final selectedHabit = habit.rebuild((b) => b..isSelected = true);
-    final habitIndex = habits.value.indexOf(habit);
+    final habitIndex =
+        habits.value.indexWhere((_habit) => _habit.habitID == habit.habitID);
 
     // remove previous isSelected
     habits.value = habits.value.rebuild((b) =>

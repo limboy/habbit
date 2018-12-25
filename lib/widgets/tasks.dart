@@ -27,7 +27,7 @@ class _TaskItem extends StatelessWidget {
     var textColor = Colors.white;
 
     if (task.isToday == true) {
-      textColor = Colors.black87;
+      textColor = Colors.black;
     }
 
     if (task.status != null && !showPassedSeq) {
