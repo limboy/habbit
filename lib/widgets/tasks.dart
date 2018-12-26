@@ -83,10 +83,6 @@ class _TaskItemState extends State<_TaskItem>
     var textColor = Colors.white;
     var borderColor = Colors.transparent;
 
-    if (task.isToday == true) {
-      textColor = Colors.black;
-    }
-
     if (task.status != null && !showPassedSeq) {
       text = '';
     }
@@ -111,6 +107,10 @@ class _TaskItemState extends State<_TaskItem>
         circleColor = Colors.black12;
       }
       borderColor = Colors.black54;
+    }
+
+    if (task.isToday == true) {
+      textColor = Colors.black;
     }
 
     if (task.isFuture == true) {
