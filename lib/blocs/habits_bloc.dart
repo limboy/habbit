@@ -55,6 +55,7 @@ class HabitsBloc extends BlocBase {
     habits.add(habits.value.rebuild(
         (b) => b.replaceRange(habitIndex, habitIndex + 1, [selectedHabit])));
     await tasksBloc.selectHabit(habit);
+    _hasLoaded.add(true);
   }
 
   updateHabit(Habit habit) async {

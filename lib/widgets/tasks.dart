@@ -36,7 +36,7 @@ class _TaskItemState extends State<_TaskItem>
   void initState() {
     super.initState();
     controller =
-        AnimationController(duration: Duration(milliseconds: 600), vsync: this);
+        AnimationController(duration: Duration(milliseconds: 500), vsync: this);
     _setupAnimation();
   }
 

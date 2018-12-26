@@ -5,12 +5,9 @@ import './repository/repository_ios.dart';
 import './widgets/tasks.dart';
 import './widgets/actions.dart';
 import './widgets/habits.dart';
-import './models/habit.dart';
-import './mock/tasks.dart';
 import './blocs/bloc_provider.dart';
 import './blocs/habits_bloc.dart';
-import './blocs/tasks_bloc.dart';
-import 'package:built_collection/built_collection.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   Env.repository = RepositoryIOS();
@@ -43,7 +40,8 @@ class Body extends StatelessWidget {
               final habitsHeight = (min(habitCount + 1, 6) / 2).ceil() *
                       (habitItemHeight + habitPadding) +
                   habitPadding;
-              final actionsHeight = totalHeight - tasksHeight - habitsHeight;
+              final actionsHeight =
+                  max(totalHeight - tasksHeight - habitsHeight, 120.0);
 
               if (habitCount == 0) {
                 // show welcome
@@ -51,8 +49,17 @@ class Body extends StatelessWidget {
                   slivers: <Widget>[
                     SliverToBoxAdapter(
                       child: Container(
-                        decoration: BoxDecoration(color: Colors.yellow),
                         height: totalHeight - habitsHeight,
+                        child: Center(
+                          child: Text(
+                            'WE BECOME \nWHAT WE \nREPEATEDLY DO.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.black87,
+                                height: 1.2),
+                          ),
+                        ),
                       ),
                     ),
                     SliverToBoxAdapter(
@@ -133,6 +140,7 @@ class App extends StatelessWidget {
         Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
+            brightness: Brightness.light,
             title: Title(),
             elevation: 0,
             backgroundColor: Colors.white,

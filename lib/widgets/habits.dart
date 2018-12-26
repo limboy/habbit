@@ -6,6 +6,7 @@ import '../blocs/bloc_provider.dart';
 import '../blocs/habits_bloc.dart';
 
 const maxHabitCount = 6;
+const padding = 16;
 
 class _Habit extends StatelessWidget {
   final Habit habit;
@@ -88,18 +89,33 @@ class _AddHabit extends StatelessWidget {
       onTap: () {
         this.tapHandler();
       },
-      child: Container(
-        width: itemWidth,
-        margin: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-            border: Border.all(
-          color: Colors.black87,
-          width: 2,
-        )),
-        padding: EdgeInsets.all(8),
-        child: Center(
-          child: Icon(Icons.add),
-        ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Container(
+            constraints: BoxConstraints.tightFor(width: itemWidth),
+            margin: EdgeInsets.symmetric(
+                vertical: 8,
+                horizontal: (constraints.maxWidth - itemWidth) / 2),
+            decoration: BoxDecoration(
+                border: Border.all(
+              color: Colors.black87,
+              width: 2,
+            )),
+            padding: EdgeInsets.all(8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Center(
+                  child: Icon(Icons.add),
+                ),
+                Text(
+                  'Create Habit',
+                  style: TextStyle(fontSize: 16),
+                )
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -197,8 +213,10 @@ class Habits extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<HabitsBloc>(context);
-    final habitWidth = (MediaQuery.of(context).size.width - 16 * 3) / 2;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final habitWidth = (MediaQuery.of(context).size.width - padding * 3) / 2;
     final aspect = habitWidth / (56.0 + 8);
+    final aspectForAddHabit = (screenWidth - padding * 2) / (56.0 + 8);
 
     return Container(
       padding: EdgeInsets.all(8.0),
@@ -212,11 +230,14 @@ class Habits extends StatelessWidget {
         builder: (context, snapshot) {
           final habits = snapshot.data;
           return GridView.builder(
+            physics: NeverScrollableScrollPhysics(),
             itemCount:
                 habits != null ? min(habits.length + 1, maxHabitCount) : 1,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: aspect,
+              crossAxisCount: (habits == null || habits.length == 0) ? 1 : 2,
+              childAspectRatio: (habits == null || habits.length == 0)
+                  ? aspectForAddHabit
+                  : aspect,
             ),
             itemBuilder: (context, index) {
               if (index < habits.length || habits.length == maxHabitCount) {
