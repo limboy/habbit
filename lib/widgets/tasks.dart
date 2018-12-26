@@ -52,7 +52,7 @@ class _TaskItemState extends State<_TaskItem>
   }
 
   _setupAnimation() {
-    var toColor = Colors.transparent;
+    var toColor = Colors.black12;
     if (widget.task.status != null) {
       switch (widget.task.status) {
         case DailyTaskStatus.completed:
@@ -106,8 +106,10 @@ class _TaskItemState extends State<_TaskItem>
     }
 
     if (task.isSelected == true) {
-      // textColor = Colors.white;
-      // circleColor = Colors.black87;
+      if (task.status == null) {
+        textColor = Colors.white;
+        circleColor = Colors.black12;
+      }
       borderColor = Colors.black54;
     }
 

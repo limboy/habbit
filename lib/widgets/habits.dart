@@ -230,7 +230,7 @@ class Habits extends StatelessWidget {
         builder: (context, snapshot) {
           final habits = snapshot.data;
           return GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            // physics: NeverScrollableScrollPhysics(),
             itemCount:
                 habits != null ? min(habits.length + 1, maxHabitCount) : 1,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

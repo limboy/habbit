@@ -46,6 +46,7 @@ class Body extends StatelessWidget {
               if (habitCount == 0) {
                 // show welcome
                 return CustomScrollView(
+                  physics: NeverScrollableScrollPhysics(),
                   slivers: <Widget>[
                     SliverToBoxAdapter(
                       child: Container(
@@ -69,6 +70,7 @@ class Body extends StatelessWidget {
                 );
               } else {
                 return CustomScrollView(
+                  physics: NeverScrollableScrollPhysics(),
                   slivers: <Widget>[
                     SliverToBoxAdapter(child: Tasks(context)),
                     SliverToBoxAdapter(child: Actions(actionsHeight)),
