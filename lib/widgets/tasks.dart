@@ -18,10 +18,8 @@ class _TaskItem extends StatefulWidget {
   final double itemWidth;
   final DailyTask task;
   final showPassedSeq;
-  var shouldAnimate;
 
-  _TaskItem(this.itemWidth, this.task,
-      {this.showPassedSeq: true, this.shouldAnimate: false});
+  _TaskItem(this.itemWidth, this.task, {this.showPassedSeq: true});
 
   @override
   State<StatefulWidget> createState() {
@@ -39,6 +37,18 @@ class _TaskItemState extends State<_TaskItem>
     super.initState();
     controller =
         AnimationController(duration: Duration(milliseconds: 600), vsync: this);
+    _setupAnimation();
+  }
+
+  @override
+  didUpdateWidget(_TaskItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.task.isSelected == true) {
+      _setupAnimation();
+      controller
+        ..reset()
+        ..forward();
+    }
   }
 
   _setupAnimation() {
@@ -59,11 +69,6 @@ class _TaskItemState extends State<_TaskItem>
         ColorTween(begin: fromColor, end: Colors.black87).animate(controller)
           ..addListener(() {
             setState(() {});
-          })
-          ..addStatusListener((status) {
-            if (status == AnimationStatus.completed) {
-              widget.shouldAnimate = false;
-            }
           });
   }
 
@@ -72,19 +77,11 @@ class _TaskItemState extends State<_TaskItem>
     final task = widget.task;
     final itemWidth = widget.itemWidth;
     final showPassedSeq = widget.showPassedSeq;
-    final shouldAnimate = widget.shouldAnimate;
 
     final bloc = BlocProvider.of<HabitsBloc>(context).tasksBloc;
     var circleColor = Colors.black12;
     var text = '${task.seq}';
     var textColor = Colors.white;
-
-    if (shouldAnimate && !controller.isAnimating) {
-      _setupAnimation();
-      controller
-        ..reset()
-        ..forward();
-    }
 
     if (task.isToday == true) {
       textColor = Colors.black;
@@ -128,7 +125,8 @@ class _TaskItemState extends State<_TaskItem>
           height: itemWidth,
           margin: EdgeInsets.all(padding / 2),
           decoration: BoxDecoration(
-            color: shouldAnimate ? animation.value : circleColor,
+            color:
+                widget.task.isSelected == true ? animation.value : circleColor,
             shape: BoxShape.circle,
           ),
           // border: Border.all(color: circleBorderColor, width: 2)),
@@ -208,7 +206,6 @@ class Tasks extends StatelessWidget {
                     itemWidth,
                     tasks[index],
                     showPassedSeq: showPassedSeq,
-                    shouldAnimate: tasks[index].isSelected == true,
                   );
                 },
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
