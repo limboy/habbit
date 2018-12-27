@@ -37,7 +37,7 @@ class _Habit extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(4)),
             border: Border.all(
               color:
-                  this.isSelected == true ? Color(0xFF007AFF) : Colors.black45,
+                  this.isSelected == true ? Color(0xFF007AFF) : Colors.black87,
               width: this.isSelected == true ? 2 : 1,
             )),
         padding: EdgeInsets.only(left: 5, right: 5, top: paddingTop),
