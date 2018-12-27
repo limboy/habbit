@@ -5,8 +5,9 @@ import '../models/habit.dart';
 import '../blocs/bloc_provider.dart';
 import '../blocs/habits_bloc.dart';
 
-const maxHabitCount = 6;
-const padding = 16;
+const padding = 16.0;
+const habitHeight = 50.0;
+var verticalPadding = 16.0;
 
 class _Habit extends StatelessWidget {
   final Habit habit;
@@ -26,12 +27,15 @@ class _Habit extends StatelessWidget {
       },
       child: Container(
         width: itemWidth,
-        margin: EdgeInsets.all(8),
+        margin: EdgeInsets.symmetric(
+            horizontal: padding / 2, vertical: verticalPadding / 2),
         decoration: BoxDecoration(
-            color: isSelected == true ? Colors.black12 : Colors.transparent,
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(4)),
             border: Border.all(
-              color: Colors.black87,
-              width: 2,
+              color:
+                  this.isSelected == true ? Color(0xFF007AFF) : Colors.black26,
+              width: this.isSelected == true ? 2 : 1,
             )),
         padding: EdgeInsets.only(top: 3, left: 5, right: 5),
         child: Column(
@@ -51,7 +55,7 @@ class _Habit extends StatelessWidget {
               ),
             ),
             Container(
-              height: 23,
+              height: 20,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -93,15 +97,17 @@ class _AddHabit extends StatelessWidget {
         builder: (context, constraints) {
           return Container(
             constraints: BoxConstraints.tightFor(width: itemWidth),
+            height: habitHeight,
             margin: EdgeInsets.symmetric(
-                vertical: 8,
-                horizontal: (constraints.maxWidth - itemWidth) / 2),
+                horizontal: padding / 2, vertical: verticalPadding / 2),
             decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(4)),
                 border: Border.all(
-              color: Colors.black87,
-              width: 2,
-            )),
-            padding: EdgeInsets.all(8),
+                  color: Colors.black26,
+                  width: 1,
+                )),
+            padding: EdgeInsets.only(top: 3, left: 5, right: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -214,33 +220,47 @@ class Habits extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<HabitsBloc>(context);
     final screenWidth = MediaQuery.of(context).size.width;
-    final habitWidth = (MediaQuery.of(context).size.width - padding * 3) / 2;
-    final aspect = habitWidth / (56.0 + 8);
-    final aspectForAddHabit = (screenWidth - padding * 2) / (56.0 + 8);
+    final habitWidth = (screenWidth - padding * 3) / 2;
+    final habitCount = (height - padding) ~/ (habitHeight + padding) * 2;
+    verticalPadding =
+        (height - habitHeight * (habitCount ~/ 2)) / (habitCount ~/ 2 + 1);
+    final aspect = (habitWidth + padding) / (habitHeight + verticalPadding);
 
     return Container(
-      padding: EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-          // color: Colors.yellow,
-          border: Border(top: BorderSide(color: Colors.black45, width: 0.5))),
+      padding: EdgeInsets.symmetric(
+          horizontal: padding / 2, vertical: verticalPadding / 2),
+      decoration: BoxDecoration(color: Colors.black12),
+      // border: Border(top: BorderSide(color: Colors.black45, width: 0.5))),
       height: height.toDouble(),
       child: StreamBuilder<BuiltList<Habit>>(
         initialData: BuiltList(),
         stream: bloc.habits,
         builder: (context, snapshot) {
           final habits = snapshot.data;
+          if (habits == null || habits.length == 0) {
+            return Container(
+              padding: EdgeInsets.only(right: padding, bottom: verticalPadding),
+              alignment: Alignment.center,
+              child: _AddHabit(habitWidth, () async {
+                final habit = Habit((b) => b
+                  ..title = ''
+                  ..created = DateTime.now().microsecondsSinceEpoch);
+                final newHabit = await _showModifyHaibtDialog(context, habit);
+                if (newHabit != null && newHabit.title != '') {
+                  bloc.addHabit(newHabit, context);
+                }
+              }),
+            );
+          }
           return GridView.builder(
-            // physics: NeverScrollableScrollPhysics(),
-            itemCount:
-                habits != null ? min(habits.length + 1, maxHabitCount) : 1,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: min(habits.length + 1, habitCount),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: (habits == null || habits.length == 0) ? 1 : 2,
-              childAspectRatio: (habits == null || habits.length == 0)
-                  ? aspectForAddHabit
-                  : aspect,
+              crossAxisCount: 2,
+              childAspectRatio: aspect,
             ),
             itemBuilder: (context, index) {
-              if (index < habits.length || habits.length == maxHabitCount) {
+              if (index < habits.length || habits.length == habitCount) {
                 return _Habit(habitWidth, habits[index], () async {
                   final updatedHabit =
                       await _showModifyHaibtDialog(context, habits[index]);

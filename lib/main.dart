@@ -35,13 +35,14 @@ class Body extends StatelessWidget {
             builder: (context, constraints) {
               final totalHeight = constraints.maxHeight;
               final tasksHeight = MediaQuery.of(context).size.width;
-              final habitItemHeight = 56;
-              final habitPadding = 16;
-              final habitsHeight = (min(habitCount + 1, 6) / 2).ceil() *
-                      (habitItemHeight + habitPadding) +
-                  habitPadding;
-              final actionsHeight =
-                  max(totalHeight - tasksHeight - habitsHeight, 120.0);
+              final habitsHeight = (totalHeight - tasksHeight).toInt();
+              // final habitItemHeight = 56;
+              // final habitPadding = 16;
+              // final habitsHeight = (min(habitCount + 1, 6) / 2).ceil() *
+              //         (habitItemHeight + habitPadding) +
+              //     habitPadding;
+              // final actionsHeight =
+              // max(totalHeight - tasksHeight - habitsHeight, 120.0);
 
               if (habitCount == 0) {
                 // show welcome
@@ -73,7 +74,7 @@ class Body extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   slivers: <Widget>[
                     SliverToBoxAdapter(child: Tasks(context)),
-                    SliverToBoxAdapter(child: Actions(actionsHeight)),
+                    // SliverToBoxAdapter(child: Actions(actionsHeight)),
                     SliverToBoxAdapter(
                       child: Habits(habitsHeight),
                     )
