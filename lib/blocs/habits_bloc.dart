@@ -5,11 +5,14 @@ import '../env.dart';
 import '../blocs/bloc_base.dart';
 import '../blocs/tasks_bloc.dart';
 import 'package:built_collection/built_collection.dart';
+import 'package:flutter/widgets.dart';
 
-class HabitsBloc extends BlocBase {
+class HabitsBloc extends BlocBase with WidgetsBindingObserver {
   final habits = BehaviorSubject<BuiltList<Habit>>(seedValue: BuiltList());
   final tasksBloc = TasksBloc();
   final _hasLoaded = BehaviorSubject<bool>(seedValue: false);
+  Habit _selectedHabit;
+  BuildContext _context;
 
   Stream<bool> get hasLoaded {
     return _hasLoaded.stream;
@@ -26,6 +29,7 @@ class HabitsBloc extends BlocBase {
 
   HabitsBloc(BuildContext context) {
     _getHabits(context);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   addHabit(Habit habit, BuildContext context) async {
@@ -56,6 +60,9 @@ class HabitsBloc extends BlocBase {
         (b) => b.replaceRange(habitIndex, habitIndex + 1, [selectedHabit])));
     await tasksBloc.selectHabit(habit);
     _hasLoaded.add(true);
+
+    _selectedHabit = habit;
+    _context = context;
   }
 
   updateHabit(Habit habit) async {
@@ -83,5 +90,13 @@ class HabitsBloc extends BlocBase {
 
   dispose() {
     habits.close();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      selectHabit(_selectedHabit, _context);
+    }
   }
 }
