@@ -109,11 +109,12 @@ class _AddHabit extends StatelessWidget {
                 )),
             padding: EdgeInsets.only(top: 3, left: 5, right: 5),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Center(
-                  child: Icon(Icons.add),
-                ),
+                // Center(
+                //   child: Icon(Icons.add),
+                // ),
                 Text(
                   'Create Habit',
                   style: TextStyle(fontSize: 16),
@@ -229,7 +230,7 @@ class Habits extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: padding / 2, vertical: verticalPadding / 2),
-      decoration: BoxDecoration(color: Colors.black12),
+      decoration: BoxDecoration(color: Color(0xFFEEEEEE)),
       // border: Border(top: BorderSide(color: Colors.black45, width: 0.5))),
       height: height.toDouble(),
       child: StreamBuilder<BuiltList<Habit>>(

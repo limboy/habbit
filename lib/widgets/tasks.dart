@@ -17,9 +17,8 @@ const quarterTasksCount = 81;
 class _TaskItem extends StatefulWidget {
   final double itemWidth;
   final DailyTask task;
-  final showPassedSeq;
 
-  _TaskItem(this.itemWidth, this.task, {this.showPassedSeq: true});
+  _TaskItem(this.itemWidth, this.task);
 
   @override
   State<StatefulWidget> createState() {
@@ -52,7 +51,7 @@ class _TaskItemState extends State<_TaskItem>
   }
 
   _setupAnimation() {
-    var toColor = Colors.black12;
+    var toColor = Color(0xFFFFDD835);
     if (widget.task.status != null) {
       switch (widget.task.status) {
         case DailyTaskStatus.completed:
@@ -75,42 +74,51 @@ class _TaskItemState extends State<_TaskItem>
   Widget build(BuildContext context) {
     final task = widget.task;
     final itemWidth = widget.itemWidth;
-    final showPassedSeq = widget.showPassedSeq;
 
     final bloc = BlocProvider.of<HabitsBloc>(context).tasksBloc;
-    var circleColor = Colors.black12;
+    var circleColor = Color(0xFFFFDD835);
     var text = '${task.seq}';
     var textColor = Colors.white;
     var borderColor = Colors.transparent;
-
-    if (task.status != null && !showPassedSeq) {
-      text = '';
-    }
+    final completedIcon = Icon(
+      Icons.done,
+      color: Colors.white,
+      size: itemWidth / 2,
+    );
+    final failedIcon = Icon(
+      Icons.close,
+      color: Colors.white,
+      size: itemWidth / 2,
+    );
+    var icon;
 
     switch (task.status) {
       case DailyTaskStatus.completed:
         circleColor = Colors.green;
+        icon = completedIcon;
         break;
       case DailyTaskStatus.failed:
         circleColor = Colors.red;
+        icon = failedIcon;
         break;
       case DailyTaskStatus.skipped:
         circleColor = Colors.black38;
-        if (showPassedSeq) {
-          text = '-';
-        }
+        text = '-';
     }
 
     if (task.isSelected == true) {
       if (task.status == null) {
         textColor = Colors.white;
-        circleColor = Colors.black12;
+        // circleColor = Colors.black12;
       }
       borderColor = Colors.black54;
     }
 
     if (task.isToday == true) {
       textColor = Colors.black;
+      if (task.status == null) {
+        circleColor = Colors.black12;
+      }
     }
 
     if (task.isFuture == true) {
@@ -130,17 +138,24 @@ class _TaskItemState extends State<_TaskItem>
           margin: EdgeInsets.all(padding / 2),
           decoration: BoxDecoration(
             color:
-                widget.task.isSelected == true ? animation.value : circleColor,
+                // widget.task.isSelected == true ? animation.value : circleColor,
+                circleColor,
             shape: BoxShape.circle,
             border: Border.all(
                 color: borderColor,
                 width: max((itemWidth ~/ 25).toDouble(), 2.0)),
           ),
           child: Center(
-            child: Text(
-              text,
-              style: TextStyle(color: textColor, fontSize: itemWidth / 2.5),
-            ),
+            child: () {
+              if (icon == null) {
+                return Text(
+                  text,
+                  style: TextStyle(color: textColor, fontSize: itemWidth / 2.5),
+                );
+              } else {
+                return icon;
+              }
+            }(),
           )),
     );
   }
@@ -190,8 +205,6 @@ class Tasks extends StatelessWidget {
             extraPaddingTop = (height - padding * 2 - itemWidth) / 2;
           }
 
-          bool showPassedSeq = sqrt(quarterTasksCount).toInt() != columnCount;
-
           return Container(
               height: height,
               width: screenWidth,
@@ -201,7 +214,7 @@ class Tasks extends StatelessWidget {
                   right: padding / 2,
                   bottom: padding / 2),
               decoration: BoxDecoration(
-                  // color: Colors.yellow,
+                  color: Colors.white,
                   border: Border(
                       bottom: BorderSide(width: 0.5, color: Colors.black26))),
               child: GridView.builder(
@@ -211,7 +224,6 @@ class Tasks extends StatelessWidget {
                   return _TaskItem(
                     itemWidth,
                     tasks[index],
-                    showPassedSeq: showPassedSeq,
                   );
                 },
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

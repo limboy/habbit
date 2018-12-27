@@ -63,13 +63,25 @@ class TasksBloc extends BlocBase {
   }
 
   selectTask(DailyTask task) {
-    selectedTask.add(task);
+    if (task.isSelected != true) {
+      selectedTask.add(task);
+      task = task.rebuild((b) => b..isSelected = true);
+    } else {
+      var status = DailyTaskStatus.completed;
+      if (task.status == DailyTaskStatus.completed) {
+        status = DailyTaskStatus.failed;
+      } else if (task.status == DailyTaskStatus.failed) {
+        status = DailyTaskStatus.skipped;
+      }
+      task = task.rebuild((b) => b..status = status);
+      Env.repository.updateTask(task);
+    }
     tasks.add(tasks.value.rebuild((b) => b.map((_task) {
           if (_task.isSelected == true && _task.seq != task.seq) {
             return _task.rebuild((__task) => __task..isSelected = false);
           }
           if (_task.seq == task.seq) {
-            return _task.rebuild((__task) => __task..isSelected = true);
+            return task;
           }
           return _task;
         })));
