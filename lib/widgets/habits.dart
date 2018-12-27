@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:built_collection/built_collection.dart';
 import 'dart:math';
+import 'dart:io';
 import '../models/habit.dart';
 import '../blocs/bloc_provider.dart';
 import '../blocs/habits_bloc.dart';
@@ -21,6 +22,8 @@ class _Habit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<HabitsBloc>(context);
+    final paddingTop = Platform.isIOS ? 3.0 : 0.0;
+    final metaHeight = Platform.isIOS ? 20.0 : 19.0;
     return GestureDetector(
       onTap: () {
         bloc.selectHabit(habit, context);
@@ -34,10 +37,10 @@ class _Habit extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(4)),
             border: Border.all(
               color:
-                  this.isSelected == true ? Color(0xFF007AFF) : Colors.black26,
+                  this.isSelected == true ? Color(0xFF007AFF) : Colors.black45,
               width: this.isSelected == true ? 2 : 1,
             )),
-        padding: EdgeInsets.only(top: 3, left: 5, right: 5),
+        padding: EdgeInsets.only(left: 5, right: 5, top: paddingTop),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -55,7 +58,7 @@ class _Habit extends StatelessWidget {
               ),
             ),
             Container(
-              height: 20,
+              height: metaHeight,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -104,7 +107,7 @@ class _AddHabit extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(4)),
                 border: Border.all(
-                  color: Colors.black26,
+                  color: Colors.black87,
                   width: 1,
                 )),
             padding: EdgeInsets.only(top: 3, left: 5, right: 5),
@@ -160,7 +163,7 @@ class Habits extends StatelessWidget {
                       filled: true,
                       hasFloatingPlaceholder: false,
                       hintText: "New Habit",
-                      contentPadding: EdgeInsets.all(8),
+                      contentPadding: EdgeInsets.all(6),
                     ),
                     controller: titleController,
                     onSubmitted: ((value) {

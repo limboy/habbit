@@ -149,6 +149,7 @@ class App extends StatelessWidget {
         Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
+            centerTitle: true,
             brightness: Brightness.light,
             title: Title(),
             elevation: 0,
