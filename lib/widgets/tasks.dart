@@ -101,6 +101,13 @@ class _TaskItemState extends State<_TaskItem>
           });
         }
       },
+      onTapCancel: () {
+        if (task.isFuture != true) {
+          this.setState(() {
+            widthRatio = 1.0;
+          });
+        }
+      },
       onTapDown: (event) {
         if (task.isFuture != true) {
           this.setState(() {
