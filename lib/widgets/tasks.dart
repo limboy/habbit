@@ -7,6 +7,7 @@ import '../blocs/tasks_bloc.dart';
 import '../blocs/habits_bloc.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_collection/built_collection.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const padding = 16.0;
 const threeTasksCount = 3;
@@ -28,46 +29,11 @@ class _TaskItem extends StatefulWidget {
 
 class _TaskItemState extends State<_TaskItem>
     with SingleTickerProviderStateMixin {
-  Animation<Color> animation;
-  AnimationController controller;
+  double widthRatio = 1.0;
 
   @override
   void initState() {
     super.initState();
-    controller =
-        AnimationController(duration: Duration(milliseconds: 500), vsync: this);
-    _setupAnimation();
-  }
-
-  @override
-  didUpdateWidget(_TaskItem oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.task.isSelected == true) {
-      _setupAnimation();
-      controller
-        ..reset()
-        ..forward();
-    }
-  }
-
-  _setupAnimation() {
-    var toColor = Color(0xFFFFDD835);
-    if (widget.task.status != null) {
-      switch (widget.task.status) {
-        case DailyTaskStatus.completed:
-          toColor = Colors.green;
-          break;
-        case DailyTaskStatus.failed:
-          toColor = Colors.red;
-          break;
-        case DailyTaskStatus.skipped:
-          toColor = Colors.black38;
-      }
-    }
-    animation = ColorTween(end: toColor).animate(controller)
-      ..addListener(() {
-        setState(() {});
-      });
   }
 
   @override
@@ -127,19 +93,25 @@ class _TaskItemState extends State<_TaskItem>
     }
 
     return GestureDetector(
-      onTap: () {
+      onTapUp: (event) {
         if (task.isFuture != true) {
           bloc.selectTask(task);
+          this.setState(() {
+            widthRatio = 1.0;
+          });
+        }
+      },
+      onTapDown: (event) {
+        if (task.isFuture != true) {
+          this.setState(() {
+            widthRatio = 1.5;
+          });
         }
       },
       child: Container(
-          width: itemWidth,
-          height: itemWidth,
-          margin: EdgeInsets.all(padding / 2),
+          margin: EdgeInsets.all(padding / 2 * widthRatio),
           decoration: BoxDecoration(
-            color:
-                // widget.task.isSelected == true ? animation.value : circleColor,
-                circleColor,
+            color: circleColor,
             shape: BoxShape.circle,
             border: Border.all(
                 color: borderColor,
@@ -162,7 +134,6 @@ class _TaskItemState extends State<_TaskItem>
 
   @override
   void dispose() {
-    controller.dispose();
     super.dispose();
   }
 }
