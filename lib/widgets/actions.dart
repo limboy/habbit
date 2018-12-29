@@ -146,10 +146,9 @@ class Actions extends StatelessWidget {
                             SharedPreferences.getInstance().then((prefs) {
                               if (prefs.getBool('hasShownSkip') != true) {
                                 final snackbar = SnackBar(
-                                    duration: Duration(seconds: 3),
                                     content: Text(
-                                      'Let\'s do it next time',
-                                    ));
+                                  'Let\'s do it next time',
+                                ));
                                 Scaffold.of(context).showSnackBar(snackbar);
                                 prefs.setBool('hasShownSkip', true);
                               }

@@ -52,24 +52,23 @@ class _TaskItemState extends State<_TaskItem>
   }
 
   _setupAnimation() {
-    var fromColor = Colors.transparent;
+    var toColor = Colors.transparent;
     if (widget.task.status != null) {
       switch (widget.task.status) {
         case DailyTaskStatus.completed:
-          fromColor = Colors.green;
+          toColor = Colors.green;
           break;
         case DailyTaskStatus.failed:
-          fromColor = Colors.red;
+          toColor = Colors.red;
           break;
         case DailyTaskStatus.skipped:
-          fromColor = Colors.black38;
+          toColor = Colors.black38;
       }
     }
-    animation =
-        ColorTween(begin: fromColor, end: Colors.black87).animate(controller)
-          ..addListener(() {
-            setState(() {});
-          });
+    animation = ColorTween(end: toColor).animate(controller)
+      ..addListener(() {
+        setState(() {});
+      });
   }
 
   @override
@@ -82,6 +81,7 @@ class _TaskItemState extends State<_TaskItem>
     var circleColor = Colors.black12;
     var text = '${task.seq}';
     var textColor = Colors.white;
+    var borderColor = Colors.transparent;
 
     if (task.isToday == true) {
       textColor = Colors.black;
@@ -99,18 +99,20 @@ class _TaskItemState extends State<_TaskItem>
         circleColor = Colors.red;
         break;
       case DailyTaskStatus.skipped:
+        circleColor = Colors.black38;
         if (showPassedSeq) {
           text = '-';
         }
     }
 
     if (task.isSelected == true) {
-      textColor = Colors.white;
-      circleColor = Colors.black87;
+      // textColor = Colors.white;
+      // circleColor = Colors.black87;
+      borderColor = Colors.black54;
     }
 
     if (task.isFuture == true) {
-      textColor = Colors.black38;
+      textColor = Colors.black26;
       circleColor = Colors.black12;
     }
 
@@ -128,8 +130,10 @@ class _TaskItemState extends State<_TaskItem>
             color:
                 widget.task.isSelected == true ? animation.value : circleColor,
             shape: BoxShape.circle,
+            border: Border.all(
+                color: borderColor,
+                width: max((itemWidth ~/ 25).toDouble(), 2.0)),
           ),
-          // border: Border.all(color: circleBorderColor, width: 2)),
           child: Center(
             child: Text(
               text,
