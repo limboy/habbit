@@ -96,7 +96,9 @@ class HabitsBloc extends BlocBase with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      selectHabit(_selectedHabit, _context);
+      if (_selectedHabit != null && _context != null) {
+        selectHabit(_selectedHabit, _context);
+      }
     }
   }
 }

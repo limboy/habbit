@@ -11,7 +11,12 @@ import 'package:flutter/services.dart';
 
 void main() {
   Env.repository = RepositoryIOS();
-  runApp(App());
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    // DeviceOrientation.portraitDown,
+  ]).then((_) {
+    runApp(App());
+  });
 }
 
 class Body extends StatelessWidget {
