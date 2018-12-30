@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1043487151073",
+    "firebase_url": "https://habbit-f54f4.firebaseio.com",
+    "project_id": "habbit-f54f4",
+    "storage_bucket": "habbit-f54f4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043487151073:android:3e18fd255ca22f2c",
+        "android_client_info": {
+          "package_name": "me.limboy.habbit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1043487151073-n067vb4g2r6ht6oj61jnbbmgahj6lv3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTrgz92Xhk5NzcewHGr8rdUhbCtNdB9L8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
