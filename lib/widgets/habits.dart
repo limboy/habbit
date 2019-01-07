@@ -168,10 +168,8 @@ class Habits extends StatelessWidget {
                     controller: titleController,
                     onSubmitted: ((value) {
                       Navigator.pop(
-                          context,
-                          habit.rebuild((b) => b
-                            ..title = value
-                            ..created = DateTime.now().microsecondsSinceEpoch));
+                          context, habit.rebuild((b) => b..title = value));
+                      // ..created = DateTime.now().microsecondsSinceEpoch));
                     }),
                   ),
                   () {
