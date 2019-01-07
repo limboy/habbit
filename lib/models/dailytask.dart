@@ -39,6 +39,9 @@ abstract class DailyTask implements Built<DailyTask, DailyTaskBuilder> {
   bool get isToday;
 
   @nullable
+  bool get isYesterday;
+
+  @nullable
   bool get isSelected;
 
   @nullable
