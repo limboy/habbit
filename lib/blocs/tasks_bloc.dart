@@ -23,13 +23,7 @@ class TasksBloc extends BlocBase {
         .inDays;
     final seq = passedDays + 1;
 
-    var presentedDays = _threeDays;
-    if (passedDays >= _threeDays) {
-      presentedDays = _weekDays;
-    }
-    if (passedDays >= _weekDays) {
-      presentedDays = _monthDays;
-    }
+    var presentedDays = _monthDays;
     if (passedDays >= _monthDays) {
       presentedDays = _quaterDays;
     }
@@ -38,13 +32,17 @@ class TasksBloc extends BlocBase {
     for (int i = 0; i < presentedDays; i++) {
       var task = tasks[i];
       if (task.seq > seq) {
-        task = task.rebuild((b) => b..isFuture = true);
+        task = task.rebuild((b) => b
+          ..isFuture = true
+          ..isSelected = false);
       } else if (task.seq == seq) {
         task = task.rebuild((b) => b
           ..isSelected = true
           ..isToday = true);
       } else if (task.seq == seq - 1) {
-        task = task.rebuild((b) => b..isYesterday = true);
+        task = task.rebuild((b) => b
+          ..isYesterday = true
+          ..isSelected = false);
       } else {
         task = task.rebuild((b) => b
           ..isSelected = false

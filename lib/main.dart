@@ -23,7 +23,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Color(0xFFEEEEEE)),
+      decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
       child: StreamBuilder<bool>(
           initialData: false,
           stream: BlocProvider.of<HabitsBloc>(context).hasLoaded,
@@ -136,7 +136,7 @@ class Title extends StatelessWidget {
           }
           return Text(
             title,
-            style: TextStyle(color: Colors.black87),
+            style: TextStyle(color: Colors.white),
           );
         });
   }
@@ -148,17 +148,18 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Habbit',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        backgroundColor: Color(0xFF212121),
+        scaffoldBackgroundColor: Color(0xFF212121),
+        primaryTextTheme: TextTheme(title: TextStyle(color: Colors.white)),
       ),
       home: ProviderWrapper(
         Scaffold(
-          backgroundColor: Colors.white,
           appBar: AppBar(
             centerTitle: true,
-            brightness: Brightness.light,
+            brightness: Brightness.dark,
             title: Title(),
             elevation: 0,
-            backgroundColor: Colors.white,
+            backgroundColor: Color(0xFF212121),
           ),
           body: Body(),
           resizeToAvoidBottomPadding: false,

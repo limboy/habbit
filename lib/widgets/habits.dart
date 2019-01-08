@@ -33,14 +33,15 @@ class _Habit extends StatelessWidget {
         margin: EdgeInsets.symmetric(
             horizontal: padding / 2, vertical: verticalPadding / 2),
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(4)),
-            border: Border.all(
-              color:
-                  this.isSelected == true ? Color(0xFF007AFF) : Colors.black87,
-              width: this.isSelected == true ? 2 : 1,
-            )),
-        padding: EdgeInsets.only(left: 5, right: 5, top: paddingTop),
+          color: this.isSelected ? Colors.blue : Colors.white30,
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+        ),
+        // border: Border.all(
+        //   color:
+        //       this.isSelected == true ? Color(0xFF007AFF) : Colors.black87,
+        //   width: this.isSelected == true ? 2 : 1,
+        // )),
+        padding: EdgeInsets.only(left: 5, right: 5, top: paddingTop, bottom: 2),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -53,7 +54,7 @@ class _Habit extends StatelessWidget {
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
             ),
@@ -64,7 +65,7 @@ class _Habit extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     habit.createdString,
-                    style: TextStyle(fontSize: 12, color: Colors.black38),
+                    style: TextStyle(fontSize: 12, color: Colors.white70),
                   ),
                   GestureDetector(
                       onTap: () {
@@ -73,6 +74,7 @@ class _Habit extends StatelessWidget {
                       child: Icon(
                         Icons.more_horiz,
                         size: 20,
+                        color: Colors.white70,
                       ))
                 ],
               ),
@@ -104,13 +106,8 @@ class _AddHabit extends StatelessWidget {
             margin: EdgeInsets.symmetric(
                 horizontal: padding / 2, vertical: verticalPadding / 2),
             decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                border: Border.all(
-                  color: Colors.black87,
-                  width: 1,
-                )),
-            padding: EdgeInsets.only(top: 3, left: 5, right: 5),
+                color: Colors.white30,
+                borderRadius: BorderRadius.all(Radius.circular(4))),
             child: Row(
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -120,7 +117,7 @@ class _AddHabit extends StatelessWidget {
                 // ),
                 Text(
                   'Create Habit',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 )
               ],
             ),
@@ -231,7 +228,7 @@ class Habits extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: padding / 2, vertical: verticalPadding / 2),
-      decoration: BoxDecoration(color: Color(0xFFEEEEEE)),
+      decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
       // border: Border(top: BorderSide(color: Colors.black45, width: 0.5))),
       height: height.toDouble(),
       child: StreamBuilder<BuiltList<Habit>>(

@@ -42,7 +42,7 @@ class _TaskItemState extends State<_TaskItem>
     final itemWidth = widget.itemWidth;
 
     final bloc = BlocProvider.of<HabitsBloc>(context).tasksBloc;
-    var circleColor = Color(0xFFFFDD835);
+    var circleColor = Colors.transparent;
     var text = '${task.seq}';
     var textColor = Colors.white;
     var borderColor = Colors.transparent;
@@ -68,8 +68,8 @@ class _TaskItemState extends State<_TaskItem>
         icon = failedIcon;
         break;
       case DailyTaskStatus.skipped:
-        circleColor = Colors.black38;
-        text = '-';
+        circleColor = Colors.green;
+        text = '//';
     }
 
     if (task.isSelected == true) {
@@ -77,24 +77,25 @@ class _TaskItemState extends State<_TaskItem>
         textColor = Colors.white;
         // circleColor = Colors.black12;
       }
-      borderColor = Colors.black54;
+      borderColor = Colors.white;
     }
 
     if (task.isToday == true) {
-      textColor = Colors.black;
       if (task.status == null) {
-        circleColor = Colors.black12;
+        circleColor = Colors.white;
+        textColor = Colors.black;
       }
     }
 
     if (task.isFuture == true) {
-      textColor = Colors.black26;
-      circleColor = Colors.black12;
+      textColor = Colors.white54;
+      // circleColor = Colors.black12;
     }
 
     return GestureDetector(
       onTapUp: (event) {
-        if (task.isToday == true || task.isYesterday == true) {
+        if (task.isToday == true ||
+            (task.isYesterday == true && task.status == null)) {
           bloc.selectTask(task);
           this.setState(() {
             widthRatio = 1.0;
@@ -102,14 +103,16 @@ class _TaskItemState extends State<_TaskItem>
         }
       },
       onTapCancel: () {
-        if (task.isToday == true || task.isYesterday == true) {
+        if (task.isToday == true ||
+            (task.isYesterday == true && task.status == null)) {
           this.setState(() {
             widthRatio = 1.0;
           });
         }
       },
       onTapDown: (event) {
-        if (task.isToday == true || task.isYesterday == true) {
+        if (task.isToday == true ||
+            (task.isYesterday == true && task.status == null)) {
           this.setState(() {
             widthRatio = 1.5;
           });
@@ -186,15 +189,15 @@ class Tasks extends StatelessWidget {
           return Container(
               height: height,
               width: screenWidth,
-              padding: EdgeInsets.only(
+              margin: EdgeInsets.only(
                   left: padding / 2,
                   top: padding / 2 + extraPaddingTop,
                   right: padding / 2,
                   bottom: padding / 2),
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).backgroundColor,
                   border: Border(
-                      bottom: BorderSide(width: 0.5, color: Colors.black26))),
+                      bottom: BorderSide(width: 1, color: Colors.white30))),
               child: GridView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: tasks.length,
