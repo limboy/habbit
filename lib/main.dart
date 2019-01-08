@@ -142,6 +142,7 @@ class App extends StatelessWidget {
     return BlocProvider(
       bloc: HabitsBloc(context),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Habbit',
         theme: ThemeData(
           backgroundColor: Color(0xFF212121),

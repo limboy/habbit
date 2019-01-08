@@ -154,7 +154,7 @@ class _Habit extends StatelessWidget {
               ),
             ),
             Container(
-              height: 20,
+              height: 19,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
