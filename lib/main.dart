@@ -44,14 +44,6 @@ class Body extends StatelessWidget {
                 final tasksHeight = MediaQuery.of(context).size.width;
                 final habitsHeight = (totalHeight - tasksHeight).toInt();
 
-                // final habitItemHeight = 56;
-                // final habitPadding = 16;
-                // final habitsHeight = (min(habitCount + 1, 6) / 2).ceil() *
-                //         (habitItemHeight + habitPadding) +
-                //     habitPadding;
-                // final actionsHeight =
-                // max(totalHeight - tasksHeight - habitsHeight, 120.0);
-
                 if (habitCount == 0) {
                   // show welcome
                   return CustomScrollView(

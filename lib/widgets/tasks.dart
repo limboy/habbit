@@ -190,10 +190,8 @@ class Tasks extends StatelessWidget {
               height: height,
               width: screenWidth,
               margin: EdgeInsets.only(
-                  left: padding / 2,
-                  top: padding / 2 + extraPaddingTop,
-                  right: padding / 2,
-                  bottom: 0),
+                  left: padding / 2, top: 0, right: padding / 2, bottom: 0),
+              padding: EdgeInsets.only(top: padding / 2 + extraPaddingTop),
               decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
                   border: Border(
