@@ -37,9 +37,41 @@ class _HabitModifier extends StatelessWidget {
               style: TextStyle(color: Colors.red),
             ),
             onPressed: () {
-              final bloc = BlocProvider.of<HabitsBloc>(context);
-              bloc.deleteHabit(habit, context);
-              Navigator.pop(context);
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Theme(
+                      data: ThemeData(dialogBackgroundColor: Color(0xFF333333)),
+                      child: AlertDialog(
+                        contentPadding: EdgeInsets.fromLTRB(24, 24, 24, 0),
+                        content: Text(
+                          'Really want to delete this habit?',
+                          style: TextStyle(color: Colors.white70),
+                        ),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text(
+                              'NO',
+                              style: TextStyle(color: Colors.white70),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          FlatButton(
+                            child: Text('YES',
+                                style: TextStyle(color: Colors.red)),
+                            onPressed: () {
+                              final bloc = BlocProvider.of<HabitsBloc>(context);
+                              bloc.deleteHabit(habit, context);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      ),
+                    );
+                  });
             },
           )
         ],
@@ -98,7 +130,7 @@ class _Habit extends StatelessWidget {
         margin: EdgeInsets.symmetric(
             horizontal: padding / 2, vertical: verticalPadding / 2),
         decoration: BoxDecoration(
-          color: this.isSelected == true ? Colors.blue : Colors.white30,
+          color: this.isSelected == true ? Colors.blue : Colors.white10,
           borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
         // border: Border.all(
@@ -171,7 +203,7 @@ class _AddHabit extends StatelessWidget {
             margin: EdgeInsets.symmetric(
                 horizontal: padding / 2, vertical: verticalPadding / 2),
             decoration: BoxDecoration(
-                color: Colors.white30,
+                color: Colors.white10,
                 borderRadius: BorderRadius.all(Radius.circular(4))),
             child: Row(
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -214,7 +246,7 @@ class Habits extends StatelessWidget {
           horizontal: padding / 2, vertical: verticalPadding / 2),
       // padding: EdgeInsets.only(
       //     left: padding / 2, right: padding / 2, bottom: verticalPadding / 2),
-      decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
+      decoration: BoxDecoration(color: Color(0xFF111111)),
       // border: Border(top: BorderSide(color: Colors.black45, width: 0.5))),
       height: height.toDouble(),
       child: StreamBuilder<BuiltList<Habit>>(

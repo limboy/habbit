@@ -138,15 +138,16 @@ class Title extends StatelessWidget {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Habbit',
-      theme: ThemeData(
-        backgroundColor: Color(0xFF212121),
-        scaffoldBackgroundColor: Color(0xFF212121),
-        primaryTextTheme: TextTheme(title: TextStyle(color: Colors.white)),
-      ),
-      home: ProviderWrapper(
-        Scaffold(
+    return BlocProvider(
+      bloc: HabitsBloc(context),
+      child: MaterialApp(
+        title: 'Habbit',
+        theme: ThemeData(
+          backgroundColor: Color(0xFF212121),
+          scaffoldBackgroundColor: Color(0xFF212121),
+          primaryTextTheme: TextTheme(title: TextStyle(color: Colors.white)),
+        ),
+        home: Scaffold(
           appBar: AppBar(
             centerTitle: true,
             brightness: Brightness.dark,

@@ -193,9 +193,8 @@ class Tasks extends StatelessWidget {
                   left: padding / 2, top: 0, right: padding / 2, bottom: 0),
               padding: EdgeInsets.only(top: padding / 2 + extraPaddingTop),
               decoration: BoxDecoration(
-                  color: Theme.of(context).backgroundColor,
-                  border: Border(
-                      bottom: BorderSide(width: 1, color: Colors.white30))),
+                color: Theme.of(context).backgroundColor,
+              ),
               child: GridView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: tasks.length,
