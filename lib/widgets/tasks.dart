@@ -94,8 +94,7 @@ class _TaskItemState extends State<_TaskItem>
 
     return GestureDetector(
       onTapUp: (event) {
-        if (task.isToday == true ||
-            (task.isYesterday == true && task.status == null)) {
+        if (task.isToday == true || task.isYesterday == true) {
           bloc.selectTask(task);
           this.setState(() {
             widthRatio = 1.0;
@@ -103,16 +102,14 @@ class _TaskItemState extends State<_TaskItem>
         }
       },
       onTapCancel: () {
-        if (task.isToday == true ||
-            (task.isYesterday == true && task.status == null)) {
+        if (task.isToday == true || task.isYesterday == true) {
           this.setState(() {
             widthRatio = 1.0;
           });
         }
       },
       onTapDown: (event) {
-        if (task.isToday == true ||
-            (task.isYesterday == true && task.status == null)) {
+        if (task.isToday == true || task.isYesterday == true) {
           this.setState(() {
             widthRatio = 1.5;
           });
