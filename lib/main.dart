@@ -23,7 +23,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
+      decoration: BoxDecoration(color: Color(0xFF111111)),
       child: StreamBuilder<bool>(
           initialData: false,
           stream: BlocProvider.of<HabitsBloc>(context).hasLoaded,
@@ -148,6 +148,7 @@ class App extends StatelessWidget {
           primaryTextTheme: TextTheme(title: TextStyle(color: Colors.white)),
         ),
         home: Scaffold(
+          backgroundColor: Color(0xFF111111),
           appBar: AppBar(
             centerTitle: true,
             brightness: Brightness.dark,
