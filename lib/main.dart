@@ -51,7 +51,8 @@ class Body extends StatelessWidget {
                     slivers: <Widget>[
                       SliverToBoxAdapter(
                         child: Container(
-                          decoration: BoxDecoration(color: Colors.white),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).backgroundColor),
                           height: totalHeight - habitsHeight,
                           child: Center(
                             child: Text(
@@ -59,7 +60,7 @@ class Body extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 24,
-                                  color: Colors.black87,
+                                  color: Colors.white,
                                   height: 1.2),
                             ),
                           ),

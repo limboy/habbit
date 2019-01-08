@@ -119,8 +119,6 @@ class _Habit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<HabitsBloc>(context);
-    final paddingTop = Platform.isIOS ? 3.0 : 0.0;
-    final metaHeight = Platform.isIOS ? 20.0 : 19.0;
     return GestureDetector(
       onTap: () {
         bloc.selectHabit(habit, context);
@@ -138,7 +136,7 @@ class _Habit extends StatelessWidget {
         //       this.isSelected == true ? Color(0xFF007AFF) : Colors.black87,
         //   width: this.isSelected == true ? 2 : 1,
         // )),
-        padding: EdgeInsets.only(left: 5, right: 5, top: paddingTop, bottom: 2),
+        padding: EdgeInsets.only(left: 5, right: 5, top: 3.0, bottom: 2),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -156,7 +154,7 @@ class _Habit extends StatelessWidget {
               ),
             ),
             Container(
-              height: metaHeight,
+              height: 20,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
