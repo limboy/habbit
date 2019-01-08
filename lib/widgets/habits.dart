@@ -10,6 +10,71 @@ const padding = 16.0;
 const habitHeight = 50.0;
 var verticalPadding = 16.0;
 
+class _HabitModifier extends StatelessWidget {
+  final Habit habit;
+  final titleController = TextEditingController();
+  _HabitModifier(this.habit) {
+    titleController.text = habit.title;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(habit.title.length > 0 ? "Edit Habit" : "Add Habit"),
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(1),
+          child: Container(
+            height: 0.5,
+            color: Colors.white30,
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              habit.title.length > 0 ? 'Delete' : '',
+              style: TextStyle(color: Colors.red),
+            ),
+            onPressed: () {
+              final bloc = BlocProvider.of<HabitsBloc>(context);
+              bloc.deleteHabit(habit, context);
+              Navigator.pop(context);
+            },
+          )
+        ],
+        backgroundColor: Color(0xFF212121),
+      ),
+      body: Container(
+        margin: EdgeInsets.all(15),
+        decoration: BoxDecoration(),
+        child: Column(
+          children: <Widget>[
+            TextField(
+              autofocus: true,
+              style: TextStyle(fontSize: 18, color: Colors.white70),
+              decoration: InputDecoration(
+                  fillColor: Color(0xFF424242),
+                  filled: true,
+                  hasFloatingPlaceholder: false,
+                  hintText: "New Habit",
+                  contentPadding: EdgeInsets.all(6),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(width: 0, color: Color(0xFF424242)),
+                      borderRadius: BorderRadius.all(Radius.circular(6)))),
+              controller: titleController,
+              onSubmitted: ((value) {
+                Navigator.pop(context, habit.rebuild((b) => b..title = value));
+              }),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _Habit extends StatelessWidget {
   final Habit habit;
   final double itemWidth;
@@ -33,7 +98,7 @@ class _Habit extends StatelessWidget {
         margin: EdgeInsets.symmetric(
             horizontal: padding / 2, vertical: verticalPadding / 2),
         decoration: BoxDecoration(
-          color: this.isSelected ? Colors.blue : Colors.white30,
+          color: this.isSelected == true ? Colors.blue : Colors.white30,
           borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
         // border: Border.all(
@@ -134,87 +199,6 @@ class Habits extends StatelessWidget {
 
   Habits(this.height);
 
-  Future<Habit> _showModifyHaibtDialog(
-      BuildContext context, Habit habit) async {
-    titleController.text = habit.title;
-
-    final bloc = BlocProvider.of<HabitsBloc>(context);
-
-    return await showDialog<Habit>(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-              contentPadding: EdgeInsets.all(16.0),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  TextField(
-                    autofocus: true,
-                    style: TextStyle(fontSize: 18, color: Colors.black87),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
-                        borderSide: BorderSide.none,
-                      ),
-                      fillColor: Colors.black12,
-                      filled: true,
-                      hasFloatingPlaceholder: false,
-                      hintText: "New Habit",
-                      contentPadding: EdgeInsets.all(6),
-                    ),
-                    controller: titleController,
-                    onSubmitted: ((value) {
-                      Navigator.pop(
-                          context, habit.rebuild((b) => b..title = value));
-                      // ..created = DateTime.now().microsecondsSinceEpoch));
-                    }),
-                  ),
-                  () {
-                    if (habit.title == null || habit.title.length == 0) {
-                      return Container();
-                    } else {
-                      return Container(
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.symmetric(vertical: 7),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Container(
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        bloc.deleteHabit(habit, context);
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text(
-                                        'delete',
-                                        style: TextStyle(color: Colors.red),
-                                      )),
-                                ),
-                                Container(
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text(
-                                        'cancel',
-                                        style: TextStyle(color: Colors.black54),
-                                      )),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      );
-                    }
-                  }()
-                ],
-              ));
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<HabitsBloc>(context);
@@ -228,6 +212,8 @@ class Habits extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: padding / 2, vertical: verticalPadding / 2),
+      // padding: EdgeInsets.only(
+      //     left: padding / 2, right: padding / 2, bottom: verticalPadding / 2),
       decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
       // border: Border(top: BorderSide(color: Colors.black45, width: 0.5))),
       height: height.toDouble(),
@@ -244,7 +230,13 @@ class Habits extends StatelessWidget {
                 final habit = Habit((b) => b
                   ..title = ''
                   ..created = DateTime.now().microsecondsSinceEpoch);
-                final newHabit = await _showModifyHaibtDialog(context, habit);
+
+                final habitPage = _HabitModifier(habit);
+                final newHabit = await Navigator.push<Habit>(context,
+                    MaterialPageRoute(builder: (context) {
+                  return habitPage;
+                }));
+
                 if (newHabit != null && newHabit.title != '') {
                   bloc.addHabit(newHabit, context);
                 }
@@ -261,8 +253,11 @@ class Habits extends StatelessWidget {
             itemBuilder: (context, index) {
               if (index < habits.length || habits.length == habitCount) {
                 return _Habit(habitWidth, habits[index], () async {
-                  final updatedHabit =
-                      await _showModifyHaibtDialog(context, habits[index]);
+                  final habitPage = _HabitModifier(habits[index]);
+                  final updatedHabit = await Navigator.push<Habit>(context,
+                      MaterialPageRoute(builder: (context) {
+                    return habitPage;
+                  }));
                   if (updatedHabit != null && updatedHabit.title != '') {
                     bloc.updateHabit(updatedHabit);
                   }
@@ -272,7 +267,13 @@ class Habits extends StatelessWidget {
                   final habit = Habit((b) => b
                     ..title = ''
                     ..created = DateTime.now().microsecondsSinceEpoch);
-                  final newHabit = await _showModifyHaibtDialog(context, habit);
+
+                  final habitPage = _HabitModifier(habit);
+                  final newHabit = await Navigator.push<Habit>(context,
+                      MaterialPageRoute(builder: (context) {
+                    return habitPage;
+                  }));
+
                   if (newHabit != null && newHabit.title != '') {
                     bloc.addHabit(newHabit, context);
                   }
