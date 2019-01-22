@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'package:flutter/services.dart';
+
 import './env.dart';
-import './repository/repository_ios.dart';
+import './repository/repository.dart';
 import './widgets/tasks.dart';
-import './widgets/actions.dart';
 import './widgets/habits.dart';
 import './blocs/bloc_provider.dart';
 import './blocs/habits_bloc.dart';
-import 'package:flutter/services.dart';
 
 void main() {
-  Env.repository = RepositoryIOS();
+  Env.repository = Repository();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     // DeviceOrientation.portraitDown,
   ]).then((_) {
-    runApp(App());
+    Env.repository.migrateDBIfNeeded().then((_) {
+      runApp(App());
+    });
   });
 }
 

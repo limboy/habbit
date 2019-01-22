@@ -19,10 +19,10 @@ class HabitsBloc extends BlocBase with WidgetsBindingObserver {
   }
 
   _getHabits(BuildContext context) async {
-    var __habits = await Env.repository.getHabits();
-    if (__habits.length > 0) {
-      habits.value = BuiltList(__habits);
-      await selectHabit(__habits[0], context);
+    var _habits = Env.repository.habits;
+    if (_habits.length > 0) {
+      habits.value = BuiltList(_habits);
+      await selectHabit(_habits[0], context);
     }
     _hasLoaded.add(true);
   }

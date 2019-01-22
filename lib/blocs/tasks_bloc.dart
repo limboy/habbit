@@ -1,19 +1,19 @@
 import 'package:rxdart/rxdart.dart';
+import 'package:built_collection/built_collection.dart';
+
 import '../models/dailytask.dart';
 import '../models/habit.dart';
-// import '../mock/tasks.dart';
 import '../blocs/bloc_base.dart';
-import 'package:built_collection/built_collection.dart';
 import '../env.dart';
 
-final _threeDays = 3;
-final _weekDays = 9;
 final _monthDays = 25;
 final _quaterDays = 81;
 
 class TasksBloc extends BlocBase {
   final selectedTask = BehaviorSubject<DailyTask>();
   final tasks = BehaviorSubject<BuiltList<DailyTask>>();
+
+  Habit _selectedHabit;
 
   BuiltList<DailyTask> _formatTasks(Habit habit, BuiltList<DailyTask> tasks) {
     final now = DateTime.now().toLocal();
@@ -62,8 +62,9 @@ class TasksBloc extends BlocBase {
     return BuiltList(_tasks);
   }
 
-  selectHabit(Habit habit) async {
-    final _tasks = await Env.repository.getTasks(habit.habitID);
+  selectHabit(Habit habit) {
+    _selectedHabit = habit;
+    final _tasks = Env.repository.getTasks(habit.habitID);
     final formatedTasks = _formatTasks(habit, _tasks);
     tasks.add(formatedTasks);
     selectedTask
@@ -82,7 +83,7 @@ class TasksBloc extends BlocBase {
         status = DailyTaskStatus.skipped;
       }
       task = task.rebuild((b) => b..status = status);
-      Env.repository.updateTask(task);
+      Env.repository.updateTask(task, _selectedHabit.habitID);
     }
     tasks.add(tasks.value.rebuild((b) => b.map((_task) {
           if (_task.isSelected == true && _task.seq != task.seq) {
@@ -96,7 +97,7 @@ class TasksBloc extends BlocBase {
   }
 
   updataTask(DailyTask task) {
-    Env.repository.updateTask(task);
+    Env.repository.updateTask(task, _selectedHabit.habitID);
     task = task.rebuild((b) => b.isSelected = true);
     selectedTask.add(task);
     tasks.add(tasks.value.rebuild((b) => b.map((_task) {

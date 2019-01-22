@@ -22,6 +22,9 @@ abstract class Habit implements Built<Habit, HabitBuilder> {
   @nullable
   bool get isSelected;
 
+  @nullable
+  BuiltList<DailyTask> get tasks;
+
   String get createdString {
     final dt = DateTime.fromMicrosecondsSinceEpoch(created);
     return '${dt.month}/${dt.day}/${dt.year}';

@@ -36,6 +36,13 @@ class _$HabitSerializer implements StructuredSerializer<Habit> {
         ..add(serializers.serialize(object.isSelected,
             specifiedType: const FullType(bool)));
     }
+    if (object.tasks != null) {
+      result
+        ..add('tasks')
+        ..add(serializers.serialize(object.tasks,
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(DailyTask)])));
+    }
 
     return result;
   }
@@ -67,6 +74,11 @@ class _$HabitSerializer implements StructuredSerializer<Habit> {
           result.isSelected = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
           break;
+        case 'tasks':
+          result.tasks.replace(serializers.deserialize(value,
+              specifiedType: const FullType(
+                  BuiltList, const [const FullType(DailyTask)])) as BuiltList);
+          break;
       }
     }
 
@@ -83,11 +95,14 @@ class _$Habit extends Habit {
   final int created;
   @override
   final bool isSelected;
+  @override
+  final BuiltList<DailyTask> tasks;
 
   factory _$Habit([void updates(HabitBuilder b)]) =>
       (new HabitBuilder()..update(updates)).build();
 
-  _$Habit._({this.habitID, this.title, this.created, this.isSelected})
+  _$Habit._(
+      {this.habitID, this.title, this.created, this.isSelected, this.tasks})
       : super._() {
     if (title == null) {
       throw new BuiltValueNullFieldError('Habit', 'title');
@@ -111,14 +126,18 @@ class _$Habit extends Habit {
         habitID == other.habitID &&
         title == other.title &&
         created == other.created &&
-        isSelected == other.isSelected;
+        isSelected == other.isSelected &&
+        tasks == other.tasks;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, habitID.hashCode), title.hashCode), created.hashCode),
-        isSelected.hashCode));
+        $jc(
+            $jc($jc($jc(0, habitID.hashCode), title.hashCode),
+                created.hashCode),
+            isSelected.hashCode),
+        tasks.hashCode));
   }
 
   @override
@@ -127,7 +146,8 @@ class _$Habit extends Habit {
           ..add('habitID', habitID)
           ..add('title', title)
           ..add('created', created)
-          ..add('isSelected', isSelected))
+          ..add('isSelected', isSelected)
+          ..add('tasks', tasks))
         .toString();
   }
 }
@@ -151,6 +171,11 @@ class HabitBuilder implements Builder<Habit, HabitBuilder> {
   bool get isSelected => _$this._isSelected;
   set isSelected(bool isSelected) => _$this._isSelected = isSelected;
 
+  ListBuilder<DailyTask> _tasks;
+  ListBuilder<DailyTask> get tasks =>
+      _$this._tasks ??= new ListBuilder<DailyTask>();
+  set tasks(ListBuilder<DailyTask> tasks) => _$this._tasks = tasks;
+
   HabitBuilder();
 
   HabitBuilder get _$this {
@@ -159,6 +184,7 @@ class HabitBuilder implements Builder<Habit, HabitBuilder> {
       _title = _$v.title;
       _created = _$v.created;
       _isSelected = _$v.isSelected;
+      _tasks = _$v.tasks?.toBuilder();
       _$v = null;
     }
     return this;
@@ -179,12 +205,26 @@ class HabitBuilder implements Builder<Habit, HabitBuilder> {
 
   @override
   _$Habit build() {
-    final _$result = _$v ??
-        new _$Habit._(
-            habitID: habitID,
-            title: title,
-            created: created,
-            isSelected: isSelected);
+    _$Habit _$result;
+    try {
+      _$result = _$v ??
+          new _$Habit._(
+              habitID: habitID,
+              title: title,
+              created: created,
+              isSelected: isSelected,
+              tasks: _tasks?.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'tasks';
+        _tasks?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'Habit', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
