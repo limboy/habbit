@@ -72,7 +72,8 @@ class Repository {
         _habits = _habits.rebuild((b) => b.add(filledHabit));
       }
 
-      final result = json.encode(serializers.serialize(_habits));
+      final result = json.encode(
+          serializers.serialize(_habits, specifiedType: builtListHabitType));
       file.writeAsStringSync(result);
     } else if (file.existsSync()) {
       final content = await file.readAsString();
