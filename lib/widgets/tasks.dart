@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/animation.dart';
+import 'package:built_collection/built_collection.dart';
 import 'dart:math';
+
 import '../models/dailytask.dart';
 import '../blocs/bloc_provider.dart';
-import '../blocs/tasks_bloc.dart';
 import '../blocs/habits_bloc.dart';
-import 'package:built_value/built_value.dart';
-import 'package:built_collection/built_collection.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 const padding = 16.0;
 const threeTasksCount = 3;
