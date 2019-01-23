@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart' show BehaviorSubject;
+import 'package:built_collection/built_collection.dart';
+import 'package:flutter/widgets.dart';
+
 import '../models/habit.dart';
 import '../env.dart';
 import '../blocs/bloc_base.dart';
 import '../blocs/tasks_bloc.dart';
-import 'package:built_collection/built_collection.dart';
-import 'package:flutter/widgets.dart';
 
 class HabitsBloc extends BlocBase with WidgetsBindingObserver {
   final habits = BehaviorSubject<BuiltList<Habit>>(seedValue: BuiltList());
