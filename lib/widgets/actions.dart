@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import '../models/dailytask.dart';
 import '../blocs/bloc_provider.dart';
-import '../blocs/tasks_bloc.dart';
 import '../blocs/habits_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Actions extends StatelessWidget {
   final double height;
@@ -39,6 +39,17 @@ class Actions extends StatelessWidget {
                     children: <Widget>[
                       GestureDetector(
                         onTap: () {
+                          SharedPreferences.getInstance().then((prefs) {
+                            if (prefs.getBool('hasShownFail') != true) {
+                              final snackbar = SnackBar(
+                                  duration: Duration(seconds: 3),
+                                  content: Text(
+                                    'Let\'s make it next time.',
+                                  ));
+                              Scaffold.of(context).showSnackBar(snackbar);
+                              prefs.setBool('hasShownFail', true);
+                            }
+                          });
                           final _task = task.rebuild(
                               (b) => b.status = DailyTaskStatus.failed);
                           bloc.updataTask(_task);
@@ -80,6 +91,17 @@ class Actions extends StatelessWidget {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
+                            SharedPreferences.getInstance().then((prefs) {
+                              if (prefs.getBool('hasShownSuccess') != true) {
+                                final snackbar = SnackBar(
+                                    duration: Duration(seconds: 3),
+                                    content: Text(
+                                      'You Make It!',
+                                    ));
+                                Scaffold.of(context).showSnackBar(snackbar);
+                                prefs.setBool('hasShownSuccess', true);
+                              }
+                            });
                             final _task = task.rebuild(
                                 (b) => b.status = DailyTaskStatus.completed);
                             bloc.updataTask(_task);
@@ -121,6 +143,17 @@ class Actions extends StatelessWidget {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
+                            SharedPreferences.getInstance().then((prefs) {
+                              if (prefs.getBool('hasShownSkip') != true) {
+                                final snackbar = SnackBar(
+                                    duration: Duration(seconds: 3),
+                                    content: Text(
+                                      'Let\'s do it next time',
+                                    ));
+                                Scaffold.of(context).showSnackBar(snackbar);
+                                prefs.setBool('hasShownSkip', true);
+                              }
+                            });
                             final _task = task.rebuild(
                                 (b) => b.status = DailyTaskStatus.skipped);
                             bloc.updataTask(_task);
